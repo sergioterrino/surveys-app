@@ -1,4 +1,6 @@
 from rest_framework import viewsets, status, generics, permissions, views
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from rest_framework.decorators import action
@@ -44,6 +46,17 @@ class UserView(views.APIView):
     def get(self, request):
         serializer = UserSerializer(request.user)
         return Response(serializer.data)
+
+
+# encontrar el user dado un user.id
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_username_by_id(request, user_id):
+    try:
+        user = User.objects.get(id=user_id)
+        return Response({'username': user.username}, status=status.HTTP_200_OK)
+    except User.DoesNotExist:
+        return Response({'error': 'User not found by Id'}, status=status.HTTP_404_NOT_FOUND)
     
 
 class SurveyViewSet(viewsets.ModelViewSet):
@@ -83,7 +96,14 @@ class SurveyViewSet(viewsets.ModelViewSet):
         answer.save()
         serializer = AnswerSerializer(answer)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-            
+    
+    
+    @action(detail=True, methods=['get'], permission_classes=[IsAuthenticated])
+    def userSurveys(self, request, pk=None):
+        surveys = Survey.objects.filter(user=request.user)
+        serializer = SurveySerializer(surveys, many=True)
+        return Response(serializer.data)
+    
 
 class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()

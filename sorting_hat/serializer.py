@@ -29,8 +29,6 @@ class LoginSerializer(serializers.Serializer):
 
 
 class SurveySerializer(serializers.ModelSerializer):
-    user = serializers.CharField(source='user.username', read_only=True) # se muestra el username del usuario que creó la encuesta
-
     class Meta:
         model = Survey
         fields = ['id', 'title', 'description', 'user']
