@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getUsernameById } from "../api/surveys";
 
-function SurveyCard({ survey }) {
+function SurveyCard({ survey, isAuth }) {
 
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
@@ -10,6 +10,18 @@ function SurveyCard({ survey }) {
   const goToSurveyPage = () => {
     navigate(`/surveys/${survey.id}`, { state: { survey: survey } });
   };
+
+  const resultsSurvey = () => {
+    console.log('resultsSurvey');
+  }
+
+  const editSurvey = () => {
+    console.log('editSurvey');
+  }
+
+  const deleteSurvey = () => {
+    console.log('delete survey');
+  }
 
   useEffect(() => {
     const getUsername = async () => {
@@ -25,16 +37,33 @@ function SurveyCard({ survey }) {
   }, []);
 
   return (
-    <div>
-      <h3>
-        {survey.id} - {survey.title}
-      </h3>
-      <p>by {username}</p>
-      <p>{survey.description}</p>
-      <button onClick={goToSurveyPage}>Fill out</button>
-      <hr />
-    </div>
-  );
+    <>
+      {isAuth ? (
+      <div>
+        <h3>
+          {survey.id} - {survey.title}
+        </h3>
+        <p>by {username}</p>
+        <p>{survey.description}</p>
+        <button onClick={resultsSurvey}>Results</button>
+        <button onClick={editSurvey}>Edit</button>
+        <button onClick={deleteSurvey}>Delete</button>
+        <hr />
+      </div>
+    ) : (
+      <div>
+        <h3>
+          {survey.id} - {survey.title}
+        </h3>
+        <p>by {username}</p>
+        <p>{survey.description}</p>
+        <button onClick={goToSurveyPage}>Fill out</button>
+        <hr />
+      </div>
+    )}
+    </>
+  )
+
 }
 
 export default SurveyCard;
