@@ -1,17 +1,22 @@
 import { useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form";
+import { useAuth } from '../context/AuthContext';
 
 function SignupPage() {
 
   const navigate = useNavigate();
   const { register, handleSubmit, formState:{errors} } = useForm();
+  const { signup } = useAuth();
 
   const goToLogin = () => {
     navigate('/login')
   }
 
-  const onSubmit = handleSubmit(data => {
+  const onSubmit = handleSubmit(async data => {
     console.log('data of Signup -> ', data);
+    const res = await signup(data);
+    if (res.status === 200) navigate('/login')
+    console.log('res dignup -> ', res);
   })
 
   return (

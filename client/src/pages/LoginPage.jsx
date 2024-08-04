@@ -1,10 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { login } from '../api/surveys'
+import { useAuth } from "../context/AuthContext";
 
 function LoginPage() {
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: {errors, isValid} } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm();
+  const { login } = useAuth();
 
   const goToSignup = () => {
     navigate("/signup");
@@ -12,9 +17,17 @@ function LoginPage() {
 
   const onSubmit = handleSubmit(async (data) => {
     console.log("data handleSubmit Login -> ", data);
-    const res = await login(data);
-    if (res.status === 200 && res.data.token) navigate('/profile')
-    console.log('res despues de login() -> ', res);
+    try {
+      const res = await login(data);
+      if (res && res.status === 200 && res.data.token) {
+        navigate("/profile");
+        console.log("res despues de loginPage() -> ", res);
+      } else{
+        console.log("Error en loginPage() -> ", res);
+      }
+    } catch (error) {
+      console.log("Login error -> ", error);
+    }
   });
 
   return (
@@ -27,14 +40,14 @@ function LoginPage() {
           name="email"
           {...register("email", { required: true })}
         />
-        {errors.email && (<div>Email is required</div>)}
+        {errors.email && <div>Email is required</div>}
         <input
           type="password"
           placeholder="Password"
           name="password"
           {...register("password", { required: true })}
         />
-        {errors.password && (<div>Password is required</div>)}
+        {errors.password && <div>Password is required</div>}
         <button type="submit">Login</button>
         <div>
           <p>You don't have an account? </p>

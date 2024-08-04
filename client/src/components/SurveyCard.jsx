@@ -11,6 +11,7 @@ function SurveyCard({survey}) {
   return (
     <div>
       <h3>{survey.id} - {survey.title}</h3>
+      <p>by {survey.user}</p>
       <p>{survey.description}</p>
       <button onClick={goToSurveyPage}>Fill out</button>
       <hr />

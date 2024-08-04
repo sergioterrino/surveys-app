@@ -38,10 +38,18 @@ class LoginView(views.APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class UserView(views.APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data)
+    
 
 class SurveyViewSet(viewsets.ModelViewSet):
     queryset = Survey.objects.all()
     serializer_class = SurveySerializer
+    permission_classes = [permissions.AllowAny]
 
     @action(detail=True, methods=['get'])
     def questions(self, request, pk=None):
@@ -80,6 +88,7 @@ class SurveyViewSet(viewsets.ModelViewSet):
 class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
+    permission_classes = [permissions.IsAuthenticated] # solo los usuarios autenticados pueden hacer cambios
     
     def create(self, request, *args, **kwargs):
         survey_id = request.data.get('survey')
@@ -95,3 +104,4 @@ class QuestionViewSet(viewsets.ModelViewSet):
 class AnswerViewSet(viewsets.ModelViewSet):
     queryset = Answer.objects.all()
     serializer_class = AnswerSerializer
+    permission_classes = [permissions.IsAuthenticated] 
