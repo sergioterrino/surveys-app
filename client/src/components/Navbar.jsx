@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom"
 import { useAuth } from '../context/AuthContext'
+import { toast } from 'react-hot-toast'
 
 function Navbar() {
 
@@ -8,7 +9,7 @@ function Navbar() {
   return (
     <nav className="bg-zinc-700 flex flex-col gap-y-3 sm:flex-row items-center justify-between my-3 px-10 py-3 rounded-lg">
       <Link to='/'>
-        <button className="text-2xl font-bold z-50 bg-zinc-700">Tasks Manager</button>
+        <button className="text-2xl font-bold z-50 bg-zinc-700">Sorting Hat</button>
       </Link>
       <ul className="flex flex-row justify-center items-center gap-2">
         {isAuthenticated ? (
@@ -23,7 +24,7 @@ function Navbar() {
               <Link to="/profile" className="text-indigo-500 bg-white font-bold px-2 py-1 rounded-md">Profile</Link>
             </li>
             <li>
-              <Link to="/" onClick={() => {logout()}} className="text-indigo-500 bg-white font-bold px-2 py-1 rounded-md">Logout</Link>
+              <Link to="/" onClick={() => {logout(); toast.error('Logout')}} className="text-indigo-500 bg-white font-bold px-2 py-1 rounded-md">Logout</Link>
             </li>
           </>
         ): (

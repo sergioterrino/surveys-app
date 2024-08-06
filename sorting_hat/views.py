@@ -67,7 +67,7 @@ class SurveyViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['get'])
     def questions(self, request, pk=None):
         survey = self.get_object()
-        questions = survey.questions.all()  # Utiliza el related_name definido en el modelo Question
+        questions = survey.questions.all() 
         serializer = QuestionSerializer(questions, many=True)
         return Response(serializer.data)
     

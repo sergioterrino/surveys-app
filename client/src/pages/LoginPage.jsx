@@ -1,15 +1,22 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
+import { useEffect } from "react";
+import { toast } from 'react-hot-toast';
 
 function LoginPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm();
   const { login } = useAuth();
+
+  useEffect(()=> {
+    if(location.state?.fromSignup) toast.success('Account create successfully')
+  },[location.state]);
 
   const goToSignup = () => {
     navigate("/signup");
@@ -20,7 +27,7 @@ function LoginPage() {
     try {
       const res = await login(data);
       if (res && res.status === 200 && res.data.token) {
-        navigate("/profile");
+        navigate("/profile", { state: {fromLogin: true}});
         console.log("res despues de loginPage() -> ", res);
       } else{
         console.log("Error en loginPage() -> ", res);

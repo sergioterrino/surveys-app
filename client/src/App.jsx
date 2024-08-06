@@ -9,24 +9,30 @@ import SignupPage from "./pages/SignupPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import ProtectedRoute from './guards/ProtectedRoute.jsx'
 import { AuthProvider } from "./context/AuthContext.jsx";
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/surveys/:id" element={<SurveyPage />} />
-          <Route path="/surveys" element={<CreateSurveyPage />} />
-          <Route path="/surveys/:id/questions/results/overall" element={<OverallResultsPage />}/>
-          
-          <Route element={<ProtectedRoute />}>
-            <Route path="/profile" element={<ProfilePage />} />
-          </Route>
-        </Routes>
+        <div className="container ">
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            {/* Mostrar una survey y sus questions:*/}
+            <Route path="/surveys/:id" element={<SurveyPage />} />
+            <Route path="/surveys/:id/questions/results/overall" element={<OverallResultsPage />}/>
+            
+            <Route element={<ProtectedRoute />}>
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/surveys" element={<CreateSurveyPage />} />
+              <Route path="/surveys/:id/update" element={<CreateSurveyPage />} />
+            </Route>
+          </Routes>
+          <Toaster/>
+        </div>
       </BrowserRouter>
     </AuthProvider>
   );

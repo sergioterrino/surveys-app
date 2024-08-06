@@ -1,13 +1,21 @@
 import axios from './axios'
 
+export const createSurvey = (survey) => axios.post('/surveys/', survey)
+
 export const getSurveys = () => axios.get('/surveys/')
 
 export const getUserSurveys = () => axios.get('/profile/')
 
-export const getQuestions = (survey) => axios.get(`/surveys/${survey.id}/questions`)
+export const updateSurvey = (id, survey) => axios.put(`/surveys/${id}/`, survey)
+
+export const deleteSurvey = (id) => axios.delete(`/surveys/${id}/`)
 
 export const fillSurvey = (id_s, answers) => axios.post(`/surveys/${id_s}/questions/fillout/`, answers)
 
-export const createSurvey = (survey) => axios.post('/surveys/', survey)
+export const getQuestions = (id) => axios.get(`/surveys/${id}/questions/`)
+
+export const createQuestion = (data) => axios.post('/questions/', data);
+
+export const updateQuestion = (data) => axios.patch(`/questions/${data.id}/`, data)
 
 export const getUsernameById = (id) => axios.get(`/get_username/${id}/`)
