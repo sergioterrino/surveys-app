@@ -1,48 +1,153 @@
-import { Link } from "react-router-dom"
-import { useAuth } from '../context/AuthContext'
-import { toast } from 'react-hot-toast'
+import { useEffect, useRef, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { toast } from "react-hot-toast";
 
 function Navbar() {
-
   const { isAuthenticated, logout } = useAuth();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null); // Referencia al dropdown, para detectar click 
+  const path = useLocation().pathname; // Ruta actual
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen); // muestra u oculta el dropdown
+  };
+  const closeDropdown = () => {
+    setIsDropdownOpen(false); // cierra el dropdown al clickar en un enlace
+  };
+
+  // Cerrar dropdown al clickar fuera de él
+  useEffect(() => {
+    console.log(path);
+    const handleClickOutside = (event) => {
+      // Si el dropdown está abierto y el click no es dentro del dropdown->closeDropdown
+      // el current verifica si el dropdown está presente en el DOM
+      // el .contains verifica si el click fue dentro del dropdown
+      // event.target es el elemento del DOM  que se clickeó
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        closeDropdown();
+      }
+    };
+    // Si el dropdown está abierto, añadir el event listener
+    if (isDropdownOpen) {
+      document.addEventListener("click", handleClickOutside);
+    } else {
+      document.removeEventListener("click", handleClickOutside);
+    }
+    // Eliminar el event listener al desmontar el componente
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [isDropdownOpen]);
 
   return (
-    <nav className="bg-zinc-700 flex flex-col gap-y-3 sm:flex-row items-center justify-between my-3 px-10 py-3 rounded-lg">
-      <Link to='/'>
-        <button className="text-2xl font-bold z-50 bg-zinc-700">Sorting Hat</button>
+    <nav className="bg-zinc-700 flex gap-y-3 flex-row items-center justify-between my-3 px-10 py-3 rounded-lg">
+      <Link to="/">
+        <button className="text-2xl font-bold z-50 bg-zinc-700">
+          Sorting Hat
+        </button>
       </Link>
-      <ul className="flex flex-row justify-center items-center gap-2">
-        {isAuthenticated ? (
-          <>
-            <li>
-              <Link to="/" className="bg-indigo-500 px-2 py-1 rounded-md font-bold">Home</Link>
-            </li>
-            <li>
-              <Link to="/surveys" className="text-indigo-500 bg-white font-bold px-2 py-1 rounded-md">Create Survey</Link>
-            </li>
-            <li>
-              <Link to="/profile" className="text-indigo-500 bg-white font-bold px-2 py-1 rounded-md">Profile</Link>
-            </li>
-            <li>
-              <Link to="/" onClick={() => {logout(); toast.error('Logout')}} className="text-indigo-500 bg-white font-bold px-2 py-1 rounded-md">Logout</Link>
-            </li>
-          </>
-        ): (
-          <>
-            <li>
-              <Link to="/" className="bg-indigo-500 px-2 py-1 rounded-md font-bold">Home</Link>
-            </li>
-            <li>
-              <Link to="/login" className="text-indigo-500 bg-white font-bold px-2 py-1 rounded-md">Login</Link>
-            </li>
-            <li>
-              <Link to="/signup" className="text-indigo-500 bg-white font-bold px-2 py-1 rounded-md">Signup</Link>
-            </li>
-          </>
+      <div className="relative" ref={dropdownRef}>
+        <button
+          onClick={toggleDropdown}
+          className="text-2xl font-bold z-50 bg-zinc-700 h-full"
+        >
+          <svg
+            className="w-9 h-9 mt-2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            ></path>
+          </svg>
+        </button>
+        {isDropdownOpen && (
+          <ul className="absolute right-0 top-16 mt-2 w-48 bg-zinc-700 rounded-md shadow-lg py-1">
+            {isAuthenticated ? (
+              <>
+                <li>
+                  <Link
+                    to="/"
+                    onClick={closeDropdown} 
+                    className={`block px-4 py-2 text-md hover:text-zinc-700 font-bold hover:bg-white ${path === '/' ? 'text-indigo-500' : ''}`}
+                  >
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/surveys"
+                    onClick={closeDropdown} 
+                    className={`block px-4 py-2 text-md hover:text-zinc-700 font-bold hover:bg-white ${path === '/surveys' ? 'text-indigo-500' : ''}`}
+                  >
+                    Create Survey
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/profile"
+                    onClick={closeDropdown} 
+                    className={`block px-4 py-2 text-md hover:text-zinc-700 font-bold hover:bg-white ${path === '/profile' ? 'text-indigo-500' : ''}`}
+                  >
+                    Profile
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/"
+                    onClick={() => {
+                      logout();
+                      toast.error("Logout");
+                      closeDropdown
+                    }}
+                    className="block px-4 py-2 text-md hover:text-zinc-700 font-bold hover:bg-white"
+                  >
+                    Logout
+                  </Link>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link
+                    to="/"
+                    onClick={closeDropdown} 
+                    className={`block px-4 py-2 text-md hover:text-zinc-700 font-bold hover:bg-white ${path === '/' ? 'text-indigo-500' : ''}`}
+                  >
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/login"
+                    onClick={closeDropdown} 
+                    className={`block px-4 py-2 text-md hover:text-zinc-700 font-bold hover:bg-white ${path === '/login' ? 'text-indigo-500' : ''}`}
+                  >
+                    Login
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/signup"
+                    onClick={closeDropdown} 
+                    className={`block px-4 py-2 text-md hover:text-zinc-700 font-bold hover:bg-white ${path === '/signup' ? 'text-indigo-500' : ''}`}
+                  >
+                    Signup
+                  </Link>
+                </li>
+              </>
+            )}
+          </ul>
         )}
-      </ul>
+      </div>
     </nav>
   );
 }
 
-export default Navbar
+export default Navbar;

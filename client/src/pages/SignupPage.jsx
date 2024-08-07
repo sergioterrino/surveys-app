@@ -23,38 +23,47 @@ function SignupPage() {
   });
 
   return (
-    <div>
-      <form onSubmit={onSubmit}>
-        <h1>Create Account</h1>
-        <input
-          type="text"
-          placeholder="Username"
-          name="username"
-          {...register("username", { required: true })}
-        />
-        {errors.username && <div>Username is required</div>}
-        <input
-          type="email"
-          placeholder="Email"
-          name="email"
-          {...register("email", { required: true })}
-        />
-        {errors.email && <div>Email is required</div>}
-        <input
-          type="password"
-          placeholder="Password"
-          name="password"
-          {...register("password", { required: true })}
-        />
-        {errors.password && <div>Password is required</div>}
-        <button type="submit">Signup</button>
-        <div>
-          <p>Do you have already an account?</p>
-          <span>
-            <button onClick={goToLogin}>Login</button>
-          </span>
-        </div>
-      </form>
+    <div className="flex items-center justify-center h-[calc(90vh-100px)]">
+      <div className="max-w-md w-full p-10 rounded-md bg-zinc-800">
+        <form onSubmit={onSubmit}>
+          <h1 className="text-3xl font-bold text-center mb-2">Create Account</h1>
+          <input
+            type="text"
+            placeholder="Username"
+            name="username"
+            {...register("username", { required: true })}
+            className="w-full px-4 py-2 my-2 rounded-md bg-zinc-700"
+          />
+          {errors.username && (
+            <div className="text-red-700 font-bold pl-2">
+              Username is required
+            </div>
+          )}
+          <input
+            type="email"
+            placeholder="Email"
+            name="email"
+            {...register("email", { required: true })}
+            className="w-full px-4 py-2 my-2 rounded-md bg-zinc-700"
+          />
+          {errors.email && (
+            <div className="text-red-700 font-bold pl-2">Email is required</div>
+          )}
+          <input
+            type="password"
+            placeholder="Password"
+            name="password"
+            {...register("password", { required: true })}
+            className="w-full px-4 py-2 my-2 rounded-md bg-zinc-700"
+          />
+          {errors.password && <div className="text-red-700 font-bold pl-2">Password is required</div>}
+          <button type="submit" className="w-full px-4 py-2 my-4 mb-6 border rounded-md font-bold hover:bg-white hover:text-zinc-700">Create</button>
+          <div className="flex justify-center gap-2 mt-2">
+            <p>Do you have already an account?</p>
+            <button onClick={goToLogin} className="font-bold text-sky-500 hover:text-sky-400">Login</button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
