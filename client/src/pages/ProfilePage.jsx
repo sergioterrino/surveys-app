@@ -37,7 +37,7 @@ function ProfilePage() {
 
   return (
     <div>
-      <h3>User.name + user.lastname</h3>
+      <h3>Username: {user.username}</h3>
       <SurveysList
         surveys={userSurveys}
         title={"My surveys"}

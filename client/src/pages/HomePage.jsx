@@ -20,10 +20,7 @@ function HomePage() {
   }, []);
 
   return (
-    <div>
-      <div>HomePage. Aqui se mostrarán todas las cards de las surveys</div>
-      <SurveysList surveys={surveys} title={"List of All surveys"}></SurveysList>
-    </div>
+      <SurveysList surveys={surveys} title={"Current Surveys"}></SurveysList>
   );
 }
 

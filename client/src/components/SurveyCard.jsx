@@ -16,7 +16,9 @@ function SurveyCard({ survey, isAuth, removeSurvey }) {
 
   const updateSurvey = () => {
     console.log("updateSurvey");
-    navigate(`/surveys/${survey.id}/update`, { state: { survey, fromUpdateSurvey: true } });
+    navigate(`/surveys/${survey.id}/update`, {
+      state: { survey, fromUpdateSurvey: true },
+    });
   };
 
   const delSurvey = async () => {
@@ -49,26 +51,43 @@ function SurveyCard({ survey, isAuth, removeSurvey }) {
   return (
     <>
       {isAuth ? (
-        <div>
-          <h3>
-            {survey.id} - {survey.title}
-          </h3>
-          <p>by {username}</p>
-          <p>{survey.description}</p>
-          <button onClick={resultsSurvey}>Results</button>
-          <button onClick={updateSurvey}>Update</button>
-          <button onClick={delSurvey}>Delete</button>
-          <hr />
+        <div className="flex flex-col items-center justify-between gap-2 bg-zinc-800 rounded-lg border p-3 text-center">
+          <h3 className="font-bold text-lg">{survey.title}</h3>
+          <p className="text-sm">{survey.description}</p>
+          <div className="flex items-center justify-around w-full mt-2">
+            <button
+              onClick={resultsSurvey}
+              className="px-2 rounded-lg font-bold bg-indigo-700 hover:bg-indigo-800 "
+            >
+              Results
+            </button>
+            <button
+              onClick={updateSurvey}
+              className="px-2 rounded-lg font-bold bg-blue-700 hover:bg-blue-800 "
+            >
+              Update
+            </button>
+            <button
+              onClick={delSurvey}
+              className="px-2 rounded-lg font-bold bg-red-700 hover:bg-red-800 "
+            >
+              Delete
+            </button>
+          </div>
         </div>
       ) : (
-        <div>
-          <h3>
-            {survey.id} - {survey.title}
-          </h3>
-          <p>by {username}</p>
-          <p>{survey.description}</p>
-          <button onClick={goToSurveyPage}>Fill out</button>
-          <hr />
+        <div className="flex flex-col items-center justify-between gap-2 bg-zinc-800 rounded-lg border p-3 text-center">
+          <div>
+            <h3 className="font-bold text-lg">{survey.title}</h3>
+            {/* <p className="text-sm text-gray-500">by {username}</p> */}
+          </div>
+          <p className="text-sm">{survey.description}</p>
+          <button
+            onClick={goToSurveyPage}
+            className="px-2 rounded-lg font-bold bg-indigo-700 hover:bg-indigo-800 "
+          >
+            Fill out
+          </button>
         </div>
       )}
     </>
