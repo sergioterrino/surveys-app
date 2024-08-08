@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { fillSurvey, getQuestions } from "../api/surveys";
 import { toast } from "react-hot-toast";
+import '../App.css'
 
 function SurveyForm({ survey, questions }) {
   // const [questions, setQuestions] = useState([]);
@@ -44,14 +45,11 @@ function SurveyForm({ survey, questions }) {
   });
 
   return (
-    <div>
+    <div className="w-full p-4 flex flex-col justify-center">
       <form onSubmit={onSubmit}>
-        <h4>{survey.title}</h4>
         {questions.map((question, i) => (
-          <div key={i}>
-            <h5>
-              {question.id} - {question.text}
-            </h5>
+          <div key={i} className="text-center rounded-md p-2 pb-4 bg-zinc-600 mb-2">
+            <h3 className="text-lg font-semibold mb-2.5">{i + 1} - {question.text}</h3>
             <input
               type="range"
               min="1"
@@ -59,12 +57,19 @@ function SurveyForm({ survey, questions }) {
               defaultValue={5}
               name={`q${i}`}
               {...register(`q${i}`, { required: true })}
+              className="w-64 "
             />
             {errors[`q${i}`] && <div>This field is required</div>}
           </div>
         ))}
-
-        <button type="submit">Submit</button>
+        <div className="mx-auto  text-center">
+          <button
+            type="submit"
+            className="py-1 font-bold rounded-md w-64 border hover:text-zinc-800 hover:bg-white"
+          >
+            Submit
+          </button>
+        </div>{" "}
       </form>
     </div>
   );

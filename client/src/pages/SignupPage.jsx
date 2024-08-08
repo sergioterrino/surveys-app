@@ -60,7 +60,7 @@ function SignupPage() {
           <button type="submit" className="w-full px-4 py-2 my-4 mb-6 border rounded-md font-bold hover:bg-white hover:text-zinc-700">Create</button>
           <div className="flex justify-center gap-2 mt-2">
             <p>Do you have already an account?</p>
-            <button onClick={goToLogin} className="font-bold text-sky-500 hover:text-sky-400">Login</button>
+            <button onClick={goToLogin} className="font-bold text-sky-500 hover:text-sky-700">Login</button>
           </div>
         </form>
       </div>

@@ -1,6 +1,12 @@
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { useForm, useFieldArray } from "react-hook-form";
-import { createSurvey, createQuestion, getQuestions, updateSurvey, updateQuestion } from "../api/surveys";
+import {
+  createSurvey,
+  createQuestion,
+  getQuestions,
+  updateSurvey,
+  updateQuestion,
+} from "../api/surveys";
 import { useAuth } from "../context/AuthContext";
 import { useEffect, useState } from "react";
 
@@ -8,8 +14,15 @@ function CreateSurveyForm() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation(); // para conseguir el estado de la ruta anterior
+  const { pathname } = useLocation(); // para conseguir la ruta actual
   const { id: surveyId } = useParams(); // para conseguir el id de la ruta actual
-  const { register, handleSubmit, control, formState: { errors }, reset } = useForm({
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+    reset,
+  } = useForm({
     defaultValues: {
       title: "",
       description: "",
@@ -43,6 +56,13 @@ function CreateSurveyForm() {
         }
       };
       getQuestionsOfSurvey();
+    } else {
+      // Resetear el formulario si no se está editando
+      reset({
+        title: "",
+        description: "",
+        questions: [{ text: "" }],
+      });
     }
   }, [surveyId, reset]);
 
@@ -80,7 +100,7 @@ function CreateSurveyForm() {
           const resUpdate = await Promise.all(questionPromises);
           console.log("resUpdate -> ", resUpdate);
 
-          navigate('/profile', { state: {fromUpdateSurvey: true} })
+          navigate("/profile", { state: { fromUpdateSurvey: true } });
         } catch (error) {
           console.log("Error updating the survey", error);
         }
@@ -105,7 +125,7 @@ function CreateSurveyForm() {
           createQuestion({ survey: surveyId, text: question.text })
         );
         await Promise.all(questionPromises);
-        navigate("/profile", { state: {fromCreateSurvey: true} });
+        navigate("/profile", { state: { fromCreateSurvey: true } });
         console.log("Survey and questions created successfully");
       } catch (error) {
         console.error("Error creating survey:", error);
@@ -114,44 +134,100 @@ function CreateSurveyForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="max-w-xl mx-auto p-9 pb-7 bg-zinc-800 rounded-md"
+    >
       <div>
-        <label>Title</label>
-        <input placeholder="Title" {...register("title", { required: true })} />
-        {errors.title && <span>Title is required</span>}
+        <label className="text-lg font-bold">Title:</label>
+        <input
+          placeholder="Title"
+          {...register("title", { required: true })}
+          className="w-full px-4 py-2 mb-2 rounded-md bg-zinc-500 "
+        />
+        {errors.title && (
+          <span className="font-bold text-red-700">Title is required</span>
+        )}
       </div>
 
-      <div>
-        <label>Description</label>
+      <div className="flex flex-col">
+        <label className="text-lg font-bold">Description:</label>
         <textarea
           placeholder="Description"
           {...register("description", { required: true })}
+          className="w-full px-4 py-2 mb-2 rounded-md bg-zinc-500 "
         ></textarea>
-        {errors.description && <span>Description is required</span>}
+        {errors.description && (
+          <span className="font-bold text-red-700">
+            Description is required
+          </span>
+        )}
       </div>
 
       <div>
-        <label>Questions</label>
+        <label className="text-lg font-bold">Questions:</label>
         {fields.map((item, index) => (
-          <div key={item.id}>
-            <input
+          <div key={item.id} className="flex gap-0.5 mb-3">
+            <textarea
               {...register(`questions.${index}.text`)}
               placeholder="Enter question text"
+              className="w-full px-4 py-2 rounded-md bg-zinc-500 "
             />
             {errors.questions?.[index]?.text && (
-              <span>Question is required</span>
+              <span className="font-bold text-red-700">
+                Question is required
+              </span>
             )}
-            <button type="button" onClick={() => remove(index)}>
-              Remove
+            <button
+              type="button"
+              onClick={() => remove(index)}
+              className="bg-red-700 font-bold rounded-md px-1 hover:bg-red-900 h-16"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                />
+              </svg>
             </button>
           </div>
         ))}
-        <button type="button" onClick={() => append({ text: "" })}>
-          Add Question
-        </button>
+        <div className="flex justify-center mb-4">
+          <button
+            type="button"
+            onClick={() => append({ text: "" })}
+            className=" bg-indigo-900 font-bold px-2 py-1 rounded-md inline-flex items-center hover:bg-indigo-950"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="size-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 4.5v15m7.5-7.5h-15"
+              />
+            </svg>&nbsp;new Question
+          </button>
+        </div>
       </div>
 
-      <button type="submit">
+      <button
+        type="submit"
+        className="w-full py-2 font-bold border rounded-md hover:bg-white hover:text-zinc-700"
+      >
         {location.state?.fromUpdateSurvey ? "Update Survey" : "Create Survey"}
       </button>
     </form>

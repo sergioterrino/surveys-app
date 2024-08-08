@@ -2,12 +2,18 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "react-hot-toast";
+import ComfirmModal from "./ConfirmModal";
 
 function Navbar() {
   const { isAuthenticated, logout } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null); // Referencia al dropdown, para detectar click 
+  const dropdownRef = useRef(null); // Referencia al dropdown, para detectar click
   const path = useLocation().pathname; // Ruta actual
+  const [showModalLogout, setShowModalLogout] = useState(false);
+
+  const onLogout = () => {
+    setShowModalLogout(true);
+  };
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen); // muestra u oculta el dropdown
@@ -74,8 +80,10 @@ function Navbar() {
                 <li>
                   <Link
                     to="/"
-                    onClick={closeDropdown} 
-                    className={`block px-4 py-2 text-md hover:text-zinc-700 font-bold hover:bg-white ${path === '/' ? 'text-indigo-500' : ''}`}
+                    onClick={closeDropdown}
+                    className={`block px-4 py-2 text-md hover:text-zinc-700 font-bold hover:bg-white ${
+                      path === "/" ? "text-indigo-500" : ""
+                    }`}
                   >
                     Home
                   </Link>
@@ -83,8 +91,10 @@ function Navbar() {
                 <li>
                   <Link
                     to="/surveys"
-                    onClick={closeDropdown} 
-                    className={`block px-4 py-2 text-md hover:text-zinc-700 font-bold hover:bg-white ${path === '/surveys' ? 'text-indigo-500' : ''}`}
+                    onClick={closeDropdown}
+                    className={`block px-4 py-2 text-md hover:text-zinc-700 font-bold hover:bg-white ${
+                      path === "/surveys" ? "text-indigo-500" : ""
+                    }`}
                   >
                     Create Survey
                   </Link>
@@ -92,8 +102,10 @@ function Navbar() {
                 <li>
                   <Link
                     to="/profile"
-                    onClick={closeDropdown} 
-                    className={`block px-4 py-2 text-md hover:text-zinc-700 font-bold hover:bg-white ${path === '/profile' ? 'text-indigo-500' : ''}`}
+                    onClick={closeDropdown}
+                    className={`block px-4 py-2 text-md hover:text-zinc-700 font-bold hover:bg-white ${
+                      path === "/profile" ? "text-indigo-500" : ""
+                    }`}
                   >
                     Profile
                   </Link>
@@ -102,14 +114,23 @@ function Navbar() {
                   <Link
                     to="/"
                     onClick={() => {
-                      logout();
-                      toast.error("Logout");
-                      closeDropdown
+                      onLogout();
                     }}
                     className="block px-4 py-2 text-md hover:text-zinc-700 font-bold hover:bg-white"
                   >
                     Logout
                   </Link>
+                  <ComfirmModal
+                    showModal={showModalLogout}
+                    setShowModal={setShowModalLogout}
+                    message="¿Do you want to log out?"
+                    onConfirm={() => {
+                      logout();
+                      toast.error("Logout");
+                      closeDropdown();
+                      setShowModalLogout(false);
+                    }}
+                  />
                 </li>
               </>
             ) : (
@@ -117,8 +138,10 @@ function Navbar() {
                 <li>
                   <Link
                     to="/"
-                    onClick={closeDropdown} 
-                    className={`block px-4 py-2 text-md hover:text-zinc-700 font-bold hover:bg-white ${path === '/' ? 'text-indigo-500' : ''}`}
+                    onClick={closeDropdown}
+                    className={`block px-4 py-2 text-md hover:text-zinc-700 font-bold hover:bg-white ${
+                      path === "/" ? "text-indigo-500" : ""
+                    }`}
                   >
                     Home
                   </Link>
@@ -126,8 +149,10 @@ function Navbar() {
                 <li>
                   <Link
                     to="/login"
-                    onClick={closeDropdown} 
-                    className={`block px-4 py-2 text-md hover:text-zinc-700 font-bold hover:bg-white ${path === '/login' ? 'text-indigo-500' : ''}`}
+                    onClick={closeDropdown}
+                    className={`block px-4 py-2 text-md hover:text-zinc-700 font-bold hover:bg-white ${
+                      path === "/login" ? "text-indigo-500" : ""
+                    }`}
                   >
                     Login
                   </Link>
@@ -135,8 +160,10 @@ function Navbar() {
                 <li>
                   <Link
                     to="/signup"
-                    onClick={closeDropdown} 
-                    className={`block px-4 py-2 text-md hover:text-zinc-700 font-bold hover:bg-white ${path === '/signup' ? 'text-indigo-500' : ''}`}
+                    onClick={closeDropdown}
+                    className={`block px-4 py-2 text-md hover:text-zinc-700 font-bold hover:bg-white ${
+                      path === "/signup" ? "text-indigo-500" : ""
+                    }`}
                   >
                     Signup
                   </Link>

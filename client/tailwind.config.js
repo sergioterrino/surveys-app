@@ -9,6 +9,10 @@ export default {
       screens: {
         'xs': '475px',
       },
+      colors: {
+        'range-thumb': '#394448', // Color del thumb
+        'range-track': '#D135DB', // Color del track
+      },
     },
   },
   plugins: [],

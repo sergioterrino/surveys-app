@@ -63,7 +63,7 @@ function LoginPage() {
            hover:text-zinc-700 hover:bg-white rounded-lg border font-bold">Login</button>
           <div className="flex justify-center gap-2 mt-6">
             <p>You don't have an account? </p>
-            <button onClick={goToSignup} className="font-bold text-sky-500 hover:text-sky-400">Signup</button>
+            <button onClick={goToSignup} className="font-bold text-sky-500 hover:text-sky-700">Signup</button>
           </div>
         </form>
       </div>

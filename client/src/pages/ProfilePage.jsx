@@ -37,10 +37,9 @@ function ProfilePage() {
 
   return (
     <div>
-      <h3>Username: {user.username}</h3>
       <SurveysList
         surveys={userSurveys}
-        title={"My surveys"}
+        title={`The ${user.username} Surveys `}
         isAuth={isAuthenticated}
         removeSurvey={removeSurvey}
       ></SurveysList>
