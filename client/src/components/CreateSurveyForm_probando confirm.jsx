@@ -41,6 +41,8 @@ function CreateSurveyForm() {
   const [oldQuestionsIds, setOldQuestionsIds] = useState();
   const MAX_QUESTIONS = 10; // Número máximo de preguntas permitidas
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [questionIndexForDelete, setQuestionIndexForDelete] = useState(null);
+  const [questionIdForDelete, setQuestionIdForDelete] = useState(null);
 
   useEffect(() => {
     if (location.state?.fromUpdateSurvey && location.state?.survey) {
@@ -172,6 +174,31 @@ function CreateSurveyForm() {
     }
   };
 
+  const onDeleteQuestion = async () => {
+    // borrar la pregunta de la base de datos si ya existía
+    console.log("onDelete --- index, dbQuestionId ->", questionIndexForDelete, questionIdForDelete);
+    
+    if (oldQuestionsIds.includes(questionIdForDelete)) {
+      setOldQuestionsIds(oldQuestionsIds.filter((id) => id !== questionIdForDelete));
+      try {
+        const res = await deleteQuestion(questionIdForDelete);
+        console.log(res);
+        if (res.status === 204) {
+          toast.success("Question deleted successfully");
+          remove(questionIndexForDelete);
+        } else {
+          toast.error("Error deleting the question");
+        }
+      } catch (error) {
+        console.log("Error deleting question", error);
+      }
+    }else{
+      console.log('No está en oldQuestionsIds');
+    }
+    setShowDeleteModal(false);
+  }
+
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -222,24 +249,10 @@ function CreateSurveyForm() {
             <button
               type="button"
               onClick={async () => {
+                setQuestionIndexForDelete(index);
                 const questionId = getValues(`questions.${index}.id`);
-                if (oldQuestionsIds.includes(questionId)) {
-                  try {
-                    const res = await deleteQuestion(questionId);
-                    console.log(res);
-                    if (res.status === 204) {
-                      toast.success("Question deleted successfully");
-                      remove(index);
-                      setOldQuestionsIds(oldQuestionsIds.filter((id) => id !== questionId));
-                    } else {
-                      toast.error("Error deleting the question");
-                    }
-                  } catch (error) {
-                    console.log("Error deleting question", error);
-                  }
-                }else{
-                  console.log('No está en oldQuestionsIds');
-                }
+                setQuestionIdForDelete(questionId);
+                setShowDeleteModal(true);
               }}
               className="bg-red-700 font-bold rounded-md px-1 hover:bg-red-900 h-16"
             >
@@ -258,6 +271,7 @@ function CreateSurveyForm() {
                 />
               </svg>
             </button>
+            <ConfirmModal showModal={showDeleteModal} setShowModal={setShowDeleteModal} message="¿Do you want delete this question?" onConfirm={onDeleteQuestion} />
           </div>
         ))}
         <div className="flex justify-center mb-4">

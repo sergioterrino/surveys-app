@@ -18,4 +18,6 @@ export const createQuestion = (data) => axios.post('/questions/', data);
 
 export const updateQuestion = (data) => axios.patch(`/questions/${data.id}/`, data)
 
+export const deleteQuestion = (id) => axios.delete(`/questions/${id}/`)
+
 export const getUsernameById = (id) => axios.get(`/get_username/${id}/`)
