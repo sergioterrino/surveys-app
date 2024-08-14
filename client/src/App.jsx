@@ -23,7 +23,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             {/* Mostrar una survey y sus questions:*/}
             <Route path="/surveys/:id" element={<SurveyPage />} />
-            <Route path="/surveys/:id/questions/results/overall" element={<OverallResultsPage />}/>
+            <Route path="/surveys/:id/results/overall" element={<OverallResultsPage />}/>
             
             <Route element={<ProtectedRoute />}>
               <Route path="/profile" element={<ProfilePage />} />

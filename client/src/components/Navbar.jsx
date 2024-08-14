@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "react-hot-toast";
 import ComfirmModal from "./ConfirmModal";
 
 function Navbar() {
   const { isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null); // Referencia al dropdown, para detectar click
   const path = useLocation().pathname; // Ruta actual
@@ -112,7 +113,6 @@ function Navbar() {
                 </li>
                 <li>
                   <Link
-                    to="/"
                     onClick={() => {
                       onLogout();
                     }}
@@ -125,10 +125,11 @@ function Navbar() {
                     setShowModal={setShowModalLogout}
                     message="¿Do you want to log out?"
                     onConfirm={() => {
-                      logout();
                       toast.error("Logout");
                       closeDropdown();
                       setShowModalLogout(false);
+                      logout();
+                      navigate('/')
                     }}
                   />
                 </li>

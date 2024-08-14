@@ -66,7 +66,7 @@ class SurveyViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['get'])
     def questions(self, request, pk=None):
-        survey = self.get_object() # DRF coje de la url el <int:pk>
+        survey = self.get_object()
         questions = survey.questions.all() 
         serializer = QuestionSerializer(questions, many=True)
         return Response(serializer.data)
@@ -104,11 +104,10 @@ class SurveyViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
     
     @action(detail=True, methods=['get'])
-    def get_answers(self, request, pk=None):
+    def getAnswers(self, request, pk=None):
         survey = self.get_object()
-        answers = Answer.objects.filter(survey=survey)
-        serializer = AnswerSerializer(answers, many=True) # el many=True es para que se muestren todos los datos
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        answers = 
+    
     
 
 class QuestionViewSet(viewsets.ModelViewSet):

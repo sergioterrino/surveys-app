@@ -1,17 +1,20 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { deleteSurvey, getUsernameById } from "../api/surveys";
+import ConfirmModal from "./ConfirmModal";
 
 function SurveyCard({ survey, isAuth, removeSurvey }) {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
+  const[showDeleteModal, setShowDeleteModal] = useState(false);
 
   const goToSurveyPage = () => {
     navigate(`/surveys/${survey.id}`, { state: { survey: survey } });
   };
 
   const resultsSurvey = () => {
-    console.log("resultsSurvey");
+    console.log("resultsSurvey + id", survey.id);
+    navigate(`/surveys/${survey.id}/results/overall`, { state: { survey: survey } });
   };
 
   const updateSurvey = () => {
@@ -25,10 +28,9 @@ function SurveyCard({ survey, isAuth, removeSurvey }) {
     try {
       console.log("delete survey");
       const res = await deleteSurvey(survey.id);
-      console.log("SurCard - delSurvye - res - before-> ", res);
       if (res.status === 204) {
         removeSurvey(survey.id);
-        console.log("SurCard - delSurvye - res-> ", res);
+        setShowDeleteModal(false);
       }
     } catch (error) {
       console.error("Error deleting the survey:", error);
@@ -39,7 +41,6 @@ function SurveyCard({ survey, isAuth, removeSurvey }) {
     const getUsername = async () => {
       try {
         const res = await getUsernameById(survey.user);
-        console.log("SurveyCard - getUsername -> ", res);
         setUsername(res.data.username);
       } catch (error) {
         console.error(error);
@@ -96,7 +97,7 @@ function SurveyCard({ survey, isAuth, removeSurvey }) {
               Update
             </button>
             <button
-              onClick={delSurvey}
+              onClick={() => setShowDeleteModal(true)}
               className="px-2 py-0.5 rounded-lg font-bold bg-red-700 hover:bg-red-800 inline-flex items-center gap-1"
             >
               <svg
@@ -115,6 +116,7 @@ function SurveyCard({ survey, isAuth, removeSurvey }) {
               </svg>
               Delete
             </button>
+            <ConfirmModal onConfirm={delSurvey} message="¿Do you want to delete the survey?" showModal={showDeleteModal} setShowModal={setShowDeleteModal}/>
           </div>
         </div>
       ) : (

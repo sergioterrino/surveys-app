@@ -23,7 +23,7 @@ function SurveyForm({ survey, questions }) {
       const res = await fillSurvey(survey.id, data);
       if (res.status === 201) {
         console.log("res fillSurvey -> ", res);
-        navigate(`/surveys/${survey.id}/questions/results/overall`);
+        navigate(`/surveys/${survey.id}/results/overall/`, {state: {survey: survey}});
         toast.success("Survey filled");
       }
     } catch (error) {
