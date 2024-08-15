@@ -25,9 +25,9 @@ class QuestionAdmin(admin.ModelAdmin):
 class AnswerAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'survey', 'user', 'created_at',
-        'result1', 'result2', 'result3', 'result4', 
-        'result5', 'result6', 'result7', 'result8',
-        'result9', 'result10'
+        'question1', 'question2', 'question3', 'question4', 
+        'question5', 'question6', 'question7', 'question8',
+        'question9', 'question10'
     )
     search_fields = ('question__text', 'user__username')
     list_filter = ('survey', 'user')
