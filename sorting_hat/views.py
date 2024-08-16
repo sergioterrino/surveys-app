@@ -8,15 +8,19 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from .models import Survey, Question, Answer
 from .serializer import SurveySerializer, QuestionSerializer, AnswerSerializer, RegisterSerializer, UserSerializer, LoginSerializer
-
+import os
+import subprocess
+from django.http import JsonResponse
 
 # Esta clase sirve para mostrar los datos de la db en la API, la diferencia con
 # los serializers es que aquí se definen las acciones que se pueden hacer con los datos
 
+
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
-    permission_classes = [permissions.AllowAny] # cualquiera puede acceder al registrarse
+    # cualquiera puede acceder al registrarse
+    permission_classes = [permissions.AllowAny]
 
 
 class LoginView(views.APIView):
@@ -28,11 +32,13 @@ class LoginView(views.APIView):
             email = serializer.validated_data.get('email')
             password = serializer.validated_data.get('password')
             try:
-                user = User.objects.get(email=email) # Buscar al usuario por email
+                # Buscar al usuario por email
+                user = User.objects.get(email=email)
             except User.DoesNotExist:
                 return Response({"error": "Invalid Credentials"}, status=status.HTTP_400_BAD_REQUEST)
 
-            user = authenticate(username=user.username, password=password) # auth con el username
+            user = authenticate(username=user.username,
+                                password=password)  # auth con el username
             if user is not None:
                 token, created = Token.objects.get_or_create(user=user)
                 return Response({'token': token.key, 'user': UserSerializer(user).data})
@@ -57,7 +63,7 @@ def get_username_by_id(request, user_id):
         return Response({'username': user.username}, status=status.HTTP_200_OK)
     except User.DoesNotExist:
         return Response({'error': 'User not found by Id'}, status=status.HTTP_404_NOT_FOUND)
-    
+
 
 class SurveyViewSet(viewsets.ModelViewSet):
     queryset = Survey.objects.all()
@@ -66,11 +72,11 @@ class SurveyViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['get'])
     def questions(self, request, pk=None):
-        survey = self.get_object() # DRF coje de la url el <int:pk>
-        questions = survey.questions.all() 
+        survey = self.get_object()  # DRF coje de la url el <int:pk>
+        questions = survey.questions.all()
         serializer = QuestionSerializer(questions, many=True)
         return Response(serializer.data)
-    
+
     @action(detail=True, methods=['post'])
     def submit_answers(self, request, pk=None):
         survey = self.get_object()
@@ -79,7 +85,7 @@ class SurveyViewSet(viewsets.ModelViewSet):
             return Response({"error": "Answer data is required"}, status=status.HTTP_400_BAD_REQUEST)
 
         user = request.user if request.user.is_authenticated else None
-        
+
         if request.user.is_authenticated:
             try:
                 answer = Answer.objects.get(survey=survey, user=user)
@@ -87,35 +93,37 @@ class SurveyViewSet(viewsets.ModelViewSet):
                 answer = Answer(survey=survey, user=user)
         else:
             answer = Answer(survey=survey, user=user)
-                
+
         for key, value in answer_data.items():
-            # Extract the question index from the key (e.g., "q0" -> 0)
-            question_index = int(key[1:])
-            setattr(answer, f"result{question_index+1}", value)
-        
+            # Extract the question index from the key (e.g., "question0" -> 0)
+            question_index = int(key[8:])
+            setattr(answer, f"question{question_index+1}", value)
+
         answer.save()
         serializer = AnswerSerializer(answer)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    
+
     @action(detail=True, methods=['get'], permission_classes=[IsAuthenticated])
     def userSurveys(self, request, pk=None):
         surveys = Survey.objects.filter(user=request.user)
         serializer = SurveySerializer(surveys, many=True)
         return Response(serializer.data)
-    
+
     @action(detail=True, methods=['get'])
     def get_answers(self, request, pk=None):
         survey = self.get_object()
         answers = Answer.objects.filter(survey=survey)
-        serializer = AnswerSerializer(answers, many=True) # el many=True es para que se muestren todos los datos
+        # el many=True es para que se muestren todos los datos
+        serializer = AnswerSerializer(answers, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
 
 class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
-    permission_classes = [permissions.IsAuthenticated] # solo los usuarios autenticados pueden hacer cambios
-    
+    # solo los usuarios autenticados pueden hacer cambios
+    permission_classes = [permissions.IsAuthenticated]
+
     def create(self, request, *args, **kwargs):
         survey_id = request.data.get('survey')
         text = request.data.get('text')
@@ -130,4 +138,42 @@ class QuestionViewSet(viewsets.ModelViewSet):
 class AnswerViewSet(viewsets.ModelViewSet):
     queryset = Answer.objects.all()
     serializer_class = AnswerSerializer
-    permission_classes = [permissions.IsAuthenticated] 
+    permission_classes = [permissions.IsAuthenticated]
+
+
+# def generate_plot(request, survey_id):
+#     try:
+#         scriptPath = os.path.join(os.path.dirname(__file__), 'etl.py')
+#         print('scriptPath, survey_id -> ', scriptPath, survey_id)
+#         # ejecutp el script que genera el plot y lo guarda en /static/
+#         result = subprocess.run(['python', scriptPath, str(
+#             survey_id)], capture_output=True, text=True)
+#         print('result.stdout:', result.stdout)
+#         print('result.stderr:', result.stderr)
+#         if result.returncode != 0:
+#             print('Error en result.returncode', result.stderr)
+#             return JsonResponse({'error': result.stderr}, status=500)
+        
+#         print('Script output:', result.stdout)
+#         return JsonResponse({'message': 'Plot generated successfully'}, status=200)
+#     except Exception as e:
+#         print('Exception:', str(e))
+#         return JsonResponse({'error': str(e)}, status=500)
+
+def generate_plot(request, survey_id):
+    try:
+        scriptPath = os.path.join(os.path.dirname(__file__), 'etl.py')
+        pythonPath = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'venv', 'Scripts', 'python.exe')  # Ajusta esta ruta según tu entorno virtual
+        print('scriptPath, survey_id -> ', scriptPath, survey_id)
+        # Ejecutar el script que genera el plot y lo guarda en /static/
+        result = subprocess.run([pythonPath, scriptPath, str(survey_id)], capture_output=True, text=True)
+        print('result.stdout:', result.stdout)
+        print('result.stderr:', result.stderr)
+        if result.returncode != 0:
+            print('Error en result.returncode:', result.stderr)
+            return JsonResponse({'error': result.stderr}, status=500)
+
+        return JsonResponse({'message': 'Plot generated successfully'}, status=200)
+    except Exception as e:
+        print('Exception:', str(e))
+        return JsonResponse({'error': str(e)}, status=500)

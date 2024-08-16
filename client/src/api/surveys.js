@@ -23,3 +23,5 @@ export const deleteQuestion = (id) => axios.delete(`/questions/${id}/`)
 export const getUsernameById = (id) => axios.get(`/get_username/${id}/`)
 
 export const getAnswers = (id) => axios.get(`/surveys/${id}/results/overall/`)
+
+export const generatePlot = (id) => axios.get(`/generate-plot/${id}/`)

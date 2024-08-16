@@ -54,13 +54,12 @@ def main(survey_id):
                         var_name='question', value_name='answer') # Convertir las columnas en filas
 
     sns.barplot(x='question', y='answer', data=df_melted) # Crear un gráfico de barras
-    plt.title('Media de los resultados por pregunta') # Configurar el título del gráfico
+    plt.title('Puntuación media de los resultados por pregunta') # Configurar el título del gráfico
     plt.xlabel('Pregunta')
-    plt.ylabel('Respuesta')
+    plt.ylabel('Puntuación')
     plt.savefig(f'static/results_chart_{survey_id}.png')  # Guardar el gráfico en un archivo
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Procesar datos de encuestas y generar gráficos.') # Crear un objeto de tipo ArgumentParser para manejar los argumentos de la línea de comandos
-    parser.add_argument('survey_id', type=int, help='ID de la encuesta') # Agregar un argumento para el ID de la encuesta
-    args = parser.parse_args() # Obtener los argumentos de la línea de comandos
-    main(args.survey_id) # Llamar a la función main con el ID de la encuesta como argumento
+    import sys
+    survey_id = sys.argv[1] if len(sys.argv) > 1 else 1
+    main(survey_id)

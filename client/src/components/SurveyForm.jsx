@@ -44,16 +44,16 @@ function SurveyForm({ survey, questions }) {
                 max="10"
                 value={answers[i] || 5}
                 name={`q${i}`}
-                {...register(`q${i}`, { required: true })}
+                {...register(`question${i}`, { required: true })}
                 onChange={(e) => {
                   handleRangeChange(e, i);
-                  setValue(`q${i}`, e.target.value);
+                  setValue(`question${i}`, e.target.value);
                 }}
                 className="range-input"
               />
               <div className="range-value">{answers[i] || 5}</div>
             </div>
-            {errors[`q${i}`] && <div>This field is required</div>}
+            {errors[`question${i}`] && <div>This field is required</div>}
           </div>
         ))}
         <div className="mx-auto text-center">
