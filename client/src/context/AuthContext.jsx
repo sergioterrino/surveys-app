@@ -39,6 +39,7 @@ export const AuthProvider = ({ children }) => {
       if (res.status === 200) {
         console.log("User Register successfully - after signup -> ", res.data);
       }
+      return res;
     } catch (error) {
       console.log('Registration error: ', error);
       throw error;

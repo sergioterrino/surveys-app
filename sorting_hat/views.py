@@ -94,10 +94,15 @@ class SurveyViewSet(viewsets.ModelViewSet):
         else:
             answer = Answer(survey=survey, user=user)
 
+        ADDITIONAL_QUESTIONS = {'question11', 'question12', 'question13'}
         for key, value in answer_data.items():
             # Extract the question index from the key (e.g., "question0" -> 0)
-            question_index = int(key[8:])
-            setattr(answer, f"question{question_index+1}", value)
+            if key in ADDITIONAL_QUESTIONS:
+                # Asignar directamente las preguntas adicionales
+                setattr(answer, key, value)
+            else:
+                question_index = int(key[8:])
+                setattr(answer, f"question{question_index+1}", value)
 
         answer.save()
         serializer = AnswerSerializer(answer)
@@ -141,32 +146,15 @@ class AnswerViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 
-# def generate_plot(request, survey_id):
-#     try:
-#         scriptPath = os.path.join(os.path.dirname(__file__), 'etl.py')
-#         print('scriptPath, survey_id -> ', scriptPath, survey_id)
-#         # ejecutp el script que genera el plot y lo guarda en /static/
-#         result = subprocess.run(['python', scriptPath, str(
-#             survey_id)], capture_output=True, text=True)
-#         print('result.stdout:', result.stdout)
-#         print('result.stderr:', result.stderr)
-#         if result.returncode != 0:
-#             print('Error en result.returncode', result.stderr)
-#             return JsonResponse({'error': result.stderr}, status=500)
-        
-#         print('Script output:', result.stdout)
-#         return JsonResponse({'message': 'Plot generated successfully'}, status=200)
-#     except Exception as e:
-#         print('Exception:', str(e))
-#         return JsonResponse({'error': str(e)}, status=500)
-
 def generate_plot(request, survey_id):
     try:
         scriptPath = os.path.join(os.path.dirname(__file__), 'etl.py')
-        pythonPath = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'venv', 'Scripts', 'python.exe')  # Ajusta esta ruta según tu entorno virtual
+        pythonPath = os.path.join(os.path.dirname(os.path.dirname(
+            __file__)), 'venv', 'Scripts', 'python.exe')  # Ajusta esta ruta según tu entorno virtual
         print('scriptPath, survey_id -> ', scriptPath, survey_id)
         # Ejecutar el script que genera el plot y lo guarda en /static/
-        result = subprocess.run([pythonPath, scriptPath, str(survey_id)], capture_output=True, text=True)
+        result = subprocess.run([pythonPath, scriptPath, str(
+            survey_id)], capture_output=True, text=True)
         print('result.stdout:', result.stdout)
         print('result.stderr:', result.stderr)
         if result.returncode != 0:

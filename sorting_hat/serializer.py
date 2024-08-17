@@ -31,7 +31,7 @@ class LoginSerializer(serializers.Serializer):
 class SurveySerializer(serializers.ModelSerializer):
     class Meta:
         model = Survey
-        fields = ['id', 'title', 'description', 'user']
+        fields = ['id', 'title', 'description', 'sex', 'age', 'religion', 'user']
         
         
 class QuestionSerializer(serializers.ModelSerializer):
@@ -43,4 +43,4 @@ class QuestionSerializer(serializers.ModelSerializer):
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
-        fields = ['id', 'survey', 'user', 'question1', 'question2', 'question3', 'question4', 'question5', 'question6', 'question7', 'question8', 'question9', 'question10', 'created_at']
+        fields = ['id', 'survey', 'user', 'question1', 'question2', 'question3', 'question4', 'question5', 'question6', 'question7', 'question8', 'question9', 'question10', 'question11', 'question12', 'question13', 'created_at']

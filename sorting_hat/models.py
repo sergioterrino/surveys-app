@@ -4,6 +4,9 @@ from django.db import models
 class Survey(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
+    sex = models.BooleanField(null=True)
+    age = models.BooleanField(null=True)
+    religion = models.BooleanField(null=True)
     user = models.ForeignKey('auth.User', related_name='surveys', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
@@ -34,6 +37,9 @@ class Answer(models.Model):
     question8 = models.IntegerField(choices=[(i, i) for i in range(1, 11)], null=True, blank=True)
     question9 = models.IntegerField(choices=[(i, i) for i in range(1, 11)], null=True, blank=True)
     question10 = models.IntegerField(choices=[(i, i) for i in range(1, 11)], null=True, blank=True)
+    question11 = models.CharField(null=True, max_length=6) #sex [men/women]
+    question12 = models.IntegerField(null=True) #age
+    question13 = models.CharField(null=True, max_length=11) #religion [christian / muslim / hindu / buddhist / Other / None]]
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

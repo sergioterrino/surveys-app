@@ -30,6 +30,9 @@ function CreateSurveyForm() {
     defaultValues: {
       title: "",
       description: "",
+      sex: false,
+      age: false,
+      religion: false,
       questions: [{ text: "" }],
     },
   });
@@ -52,6 +55,9 @@ function CreateSurveyForm() {
           reset({
             title: location.state.survey.title,
             description: location.state.survey.description,
+            sex: location.state.survey.sex,
+            age: location.state.survey.age,
+            religion: location.state.survey.religion,
             questions: questions.map((q) => ({ id: q.id, text: q.text })),
           });
           console.log("CSform - res - getquestions ->", res.data);
@@ -71,6 +77,9 @@ function CreateSurveyForm() {
       reset({
         title: "",
         description: "",
+        sex: false,
+        age: false,
+        religion: false,
         questions: [{ text: "" }],
       });
     }
@@ -78,6 +87,7 @@ function CreateSurveyForm() {
 
   const onSubmit = async (data) => {
     data.user = user.id;
+    console.log("dataaaaaaaaaaaa", data);
     // Si se está editando una encuesta
     if (location.state?.fromUpdateSurvey && location.state?.survey) {
       console.log("dataaaaaaa editSurvey on submit -> ", data);
@@ -101,6 +111,9 @@ function CreateSurveyForm() {
           const res = await updateSurvey(surveyId, {
             title: data.title,
             description: data.description,
+            sex: data.sex,
+            age: data.age,
+            religion: data.religion,
           });
           console.log("res updateSurvey fromEdit -> ", res);
 
@@ -112,9 +125,12 @@ function CreateSurveyForm() {
           // const res1 = await updateQuestions(surveyId, questions);
           const questionPromises = filteredQuestions.map((q, i) => {
             console.log("fields[i].id->", fields[i].id);
-            console.log('oldQuestionsIds>>>>>>>>>>>>>>', oldQuestionsIds);
+            console.log("oldQuestionsIds>>>>>>>>>>>>>>", oldQuestionsIds);
             if (oldQuestionsIds.includes(q.id) && fields[i].id) {
-              console.log("if oldQuestionsIds.includes(q.id) && fields[i].id", q.id);
+              console.log(
+                "if oldQuestionsIds.includes(q.id) && fields[i].id",
+                q.id
+              );
               return updateQuestion({
                 id: q.id,
                 survey: surveyId,
@@ -156,6 +172,9 @@ function CreateSurveyForm() {
           user: data.user,
           title: data.title,
           description: data.description,
+          sex: data.sex,
+          age: data.age,
+          religion: data.religion,
         });
         const surveyId = surveyRes.data.id;
 
@@ -230,15 +249,17 @@ function CreateSurveyForm() {
                     if (res.status === 204) {
                       toast.success("Question deleted successfully");
                       remove(index);
-                      setOldQuestionsIds(oldQuestionsIds.filter((id) => id !== questionId));
+                      setOldQuestionsIds(
+                        oldQuestionsIds.filter((id) => id !== questionId)
+                      );
                     } else {
                       toast.error("Error deleting the question");
                     }
                   } catch (error) {
                     console.log("Error deleting question", error);
                   }
-                }else{
-                  console.log('No está en oldQuestionsIds');
+                } else {
+                  console.log("No está en oldQuestionsIds");
                 }
               }}
               className="bg-red-700 font-bold rounded-md px-1 hover:bg-red-900 h-16"
@@ -260,7 +281,8 @@ function CreateSurveyForm() {
             </button>
           </div>
         ))}
-        <div className="flex justify-center mb-4">
+
+        <div className="flex justify-center mb-3">
           <button
             type="button"
             id="addQuestion"
@@ -292,9 +314,40 @@ function CreateSurveyForm() {
         </div>
       </div>
 
+      <div>
+        <h1 className="text-lg font-bold">Additional questions:</h1>
+        <div className="flex flex-col">
+          <div className="flex gap-2 ml-4">
+            <input type="checkbox" name="sex" id="sex" {...register("sex")} />
+            <label htmlFor="sex">
+              Ask about the sex &nbsp;{" "}
+              <span className="text-gray-500">[men / women]</span>
+            </label>
+          </div>
+          <div className="flex gap-2 ml-4">
+            <input type="checkbox" name="age" id="age" {...register("age")} />
+            <label htmlFor="age">Ask about the age</label>
+          </div>
+          <div className="flex gap-2 ml-4">
+            <input
+              type="checkbox"
+              name="religion"
+              id="religion"
+              {...register("religion")}
+            />
+            <label htmlFor="religion">
+              Ask about the religion &nbsp;{" "}
+              <span className="text-gray-500">
+                [christian / muslim / hindu / jewish / buddhist / Other / None]
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+
       <button
         type="submit"
-        className="w-full py-2 font-bold border rounded-md hover:bg-white hover:text-zinc-700"
+        className="w-full py-2 mt-3 font-bold border rounded-md hover:bg-white hover:text-zinc-700"
       >
         {location.state?.fromUpdateSurvey ? "Update Survey" : "Create Survey"}
       </button>

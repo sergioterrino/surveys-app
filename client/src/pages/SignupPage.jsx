@@ -18,7 +18,7 @@ function SignupPage() {
   const onSubmit = handleSubmit(async (data) => {
     console.log("data of Signup -> ", data);
     const res = await signup(data);
-    if (res.status === 200) navigate("/login", { state: { fromSignup: true } });
+    if (res.status === 201) navigate("/login", { state: { fromSignup: true } });
     console.log("res dignup -> ", res);
   });
 

@@ -3,17 +3,22 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { fillSurvey } from "../api/surveys";
 import { toast } from "react-hot-toast";
-import '../App.css'
+import "../App.css";
 
 function SurveyForm({ survey, questions }) {
   const [answers, setAnswers] = useState({});
-  const { register, handleSubmit, formState: { errors }, setValue } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm();
   const navigate = useNavigate();
 
   const handleRangeChange = (e, index) => {
     setAnswers({
       ...answers,
-      [index]: e.target.value
+      [index]: e.target.value,
     });
   };
 
@@ -23,7 +28,9 @@ function SurveyForm({ survey, questions }) {
       const res = await fillSurvey(survey.id, data);
       if (res.status === 201) {
         console.log("res fillSurvey -> ", res);
-        navigate(`/surveys/${survey.id}/results/overall/`, {state: {survey: survey}});
+        navigate(`/surveys/${survey.id}/results/overall/`, {
+          state: { survey: survey },
+        });
         toast.success("Survey filled");
       }
     } catch (error) {
@@ -35,8 +42,13 @@ function SurveyForm({ survey, questions }) {
     <div className="w-full p-4 flex flex-col justify-center">
       <form onSubmit={onSubmit}>
         {questions.map((question, i) => (
-          <div key={i} className="text-center rounded-md p-2 pb-4 bg-zinc-600 mb-2">
-            <h3 className="text-lg font-semibold mb-2.5">{i + 1} - {question.text}</h3>
+          <div
+            key={i}
+            className="text-center rounded-md p-2 pb-4 bg-zinc-600 mb-2"
+          >
+            <h3 className="text-lg font-semibold mb-2.5">
+              {i + 1} - {question.text}
+            </h3>
             <div className="range-wrapper">
               <input
                 type="range"
@@ -56,6 +68,132 @@ function SurveyForm({ survey, questions }) {
             {errors[`question${i}`] && <div>This field is required</div>}
           </div>
         ))}
+
+        {survey.sex && (
+          <div className="flex gap-10 mb-2 items-center">
+            <h1 className="font-bold text-lg">¿What is your sex?</h1>
+            <div className="pt-0.5">
+              <input
+                type="radio"
+                name="sex"
+                id="men"
+                value={"men"}
+                {...register("question11")}
+              />
+              <label htmlFor="men">&nbsp;Men</label>
+              <input
+                type="radio"
+                name="sex"
+                id="women"
+                value={"women"}
+                {...register("question11")}
+                className="ml-4"
+              />
+              <label htmlFor="women">&nbsp;Women</label>
+            </div>
+          </div>
+        )}
+
+        {survey.age && (
+          <div className="flex gap-10 mb-2 items-center">
+            <h1 className="font-bold text-lg">¿How old are you?</h1>
+            <div>
+              <input
+                type="number"
+                name="age"
+                id="age"
+                className="text-white w-11 pl-2 rounded-md bg-zinc-500"
+                {...register("question12")}
+              />
+              <span>&nbsp;years old</span>
+            </div>
+          </div>
+        )}
+
+        {survey.religion && (
+          <div className="flex flex-col mb-2">
+            <h1 className="font-bold text-lg">
+              ¿What religion do you practice?
+            </h1>
+            <div className="ml-4 pt-0.5 flex gap-16">
+              <div>
+                <div className="text-left">
+                  <input
+                    type="radio"
+                    name="religion"
+                    id="christian"
+                    value={"christian"}
+                    {...register("question13")}
+                  />
+                  <label htmlFor="christian">&nbsp;Christian</label>
+                </div>
+                <div className="text-left">
+                  <input
+                    type="radio"
+                    name="religion"
+                    id="muslim"
+                    value={"muslim"}
+                    {...register("question13")}
+                  />
+                  <label htmlFor="muslim">&nbsp;Muslim</label>
+                </div>
+                <div>
+                  <input
+                    type="radio"
+                    name="religion"
+                    id="hindu"
+                    value={"hindu"}
+                    {...register("question13")}
+                  />
+                  <label htmlFor="hindu">&nbsp;Hindu</label>
+                </div>
+                <div className="text-left">
+                  <input
+                    type="radio"
+                    name="religion"
+                    id="judaism"
+                    value={"judaism"}
+                    {...register("question13")}
+                  />
+                  <label htmlFor="judaism">&nbsp;Judaism</label>
+                </div>
+              </div>
+              <div>
+                <div>
+                  <input
+                    type="radio"
+                    name="religion"
+                    id="buddhist"
+                    value={"buddhist"}
+                    {...register("question13")}
+                  />
+                  <label htmlFor="buddhist">&nbsp;Buddhist</label>
+                </div>
+                <div>
+                  <input
+                    type="radio"
+                    name="religion"
+                    id="other"
+                    value={"other"}
+                    {...register("question13")}
+                  />
+                  <label htmlFor="other">&nbsp;Other</label>
+                </div>
+                <div>
+                  <input
+                    type="radio"
+                    name="religion"
+                    id="unbeliever"
+                    value={"unbeliever"}
+                    {...register("question13")}
+                  />
+                  <label htmlFor="unbeliever">&nbsp;Unbeliever</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="mx-auto text-center">
           <button
             type="submit"

@@ -37,17 +37,17 @@ function SurveyCard({ survey, isAuth, removeSurvey }) {
     }
   };
 
-  useEffect(() => {
-    const getUsername = async () => {
-      try {
-        const res = await getUsernameById(survey.user);
-        setUsername(res.data.username);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getUsername();
-  }, []);
+  // useEffect(() => {
+  //   const getUsername = async () => {
+  //     try {
+  //       const res = await getUsernameById(survey.user);
+  //       setUsername(res.data.username);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+  //   getUsername();
+  // }, []);
 
   return (
     <>
