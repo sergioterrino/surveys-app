@@ -48,10 +48,10 @@ function Navbar() {
   }, [isDropdownOpen]);
 
   return (
-    <nav className="bg-zinc-700 flex gap-y-3 flex-row items-center justify-between my-3 px-10 py-3 rounded-lg">
+    <nav className="bg-zinc-700 flex gap-y-3 flex-row items-center justify-between my-3 pl-2 pr-8 py-3 rounded-lg">
       <Link to="/">
-        <button className="text-2xl font-bold z-50 bg-zinc-700">
-          Sorting Hat
+        <button className="text-2xl font-bold z-50 bg-zinc-700 flex items-center">
+        <img src="/images/hat.png" className="w-24" /><img src="/images/sortingHat.png" className="relative right-4"/>
         </button>
       </Link>
       <div className="relative" ref={dropdownRef}>
@@ -75,7 +75,7 @@ function Navbar() {
           </svg>
         </button>
         {isDropdownOpen && (
-          <ul className="absolute right-0 top-16 mt-2 w-48 bg-zinc-700 rounded-md shadow-lg py-1">
+          <ul className="absolute right-0 top-16 mt-2 w-48 bg-zinc-700 rounded-md shadow-lg py-1 z-1">
             {isAuthenticated ? (
               <>
                 <li>

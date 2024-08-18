@@ -47,7 +47,7 @@ function SurveyForm({ survey, questions }) {
             className="text-center rounded-md p-2 pb-4 bg-zinc-600 mb-2"
           >
             <h3 className="text-lg font-semibold mb-2.5">
-              {i + 1} - {question.text}
+              {question.text}
             </h3>
             <div className="range-wrapper">
               <input
@@ -70,7 +70,7 @@ function SurveyForm({ survey, questions }) {
         ))}
 
         {survey.sex && (
-          <div className="flex gap-10 mb-2 items-center">
+          <div className="flex gap-10 mb-2 items-center text-center rounded-md py-2 pl-4 bg-zinc-700">
             <h1 className="font-bold text-lg">¿What is your sex?</h1>
             <div className="pt-0.5">
               <input
@@ -95,7 +95,7 @@ function SurveyForm({ survey, questions }) {
         )}
 
         {survey.age && (
-          <div className="flex gap-10 mb-2 items-center">
+          <div className="flex gap-10 mb-2 items-center rounded-md py-2 pl-4 bg-zinc-700">
             <h1 className="font-bold text-lg">¿How old are you?</h1>
             <div>
               <input
@@ -105,90 +105,86 @@ function SurveyForm({ survey, questions }) {
                 className="text-white w-11 pl-2 rounded-md bg-zinc-500"
                 {...register("question12")}
               />
-              <span>&nbsp;years old</span>
+              <span>&nbsp; years old</span>
             </div>
           </div>
         )}
 
         {survey.religion && (
-          <div className="flex flex-col mb-2">
+          <div className="flex flex-col mb-2 rounded-md py-2 pl-4 bg-zinc-700">
             <h1 className="font-bold text-lg">
               ¿What religion do you practice?
             </h1>
-            <div className="ml-4 pt-0.5 flex gap-16">
-              <div>
-                <div className="text-left">
-                  <input
-                    type="radio"
-                    name="religion"
-                    id="christian"
-                    value={"christian"}
-                    {...register("question13")}
-                  />
-                  <label htmlFor="christian">&nbsp;Christian</label>
-                </div>
-                <div className="text-left">
-                  <input
-                    type="radio"
-                    name="religion"
-                    id="muslim"
-                    value={"muslim"}
-                    {...register("question13")}
-                  />
-                  <label htmlFor="muslim">&nbsp;Muslim</label>
-                </div>
-                <div>
-                  <input
-                    type="radio"
-                    name="religion"
-                    id="hindu"
-                    value={"hindu"}
-                    {...register("question13")}
-                  />
-                  <label htmlFor="hindu">&nbsp;Hindu</label>
-                </div>
-                <div className="text-left">
-                  <input
-                    type="radio"
-                    name="religion"
-                    id="judaism"
-                    value={"judaism"}
-                    {...register("question13")}
-                  />
-                  <label htmlFor="judaism">&nbsp;Judaism</label>
-                </div>
+            <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-4 ml-4 pt-0.5">
+              <div className="text-left">
+                <input
+                  type="radio"
+                  name="religion"
+                  id="christian"
+                  value={"christian"}
+                  {...register("question13")}
+                />
+                <label htmlFor="christian">&nbsp;Christian</label>
+              </div>
+              <div className="text-left">
+                <input
+                  type="radio"
+                  name="religion"
+                  id="muslim"
+                  value={"muslim"}
+                  {...register("question13")}
+                />
+                <label htmlFor="muslim">&nbsp;Muslim</label>
               </div>
               <div>
-                <div>
-                  <input
-                    type="radio"
-                    name="religion"
-                    id="buddhist"
-                    value={"buddhist"}
-                    {...register("question13")}
-                  />
-                  <label htmlFor="buddhist">&nbsp;Buddhist</label>
-                </div>
-                <div>
-                  <input
-                    type="radio"
-                    name="religion"
-                    id="other"
-                    value={"other"}
-                    {...register("question13")}
-                  />
-                  <label htmlFor="other">&nbsp;Other</label>
-                </div>
-                <div>
-                  <input
-                    type="radio"
-                    name="religion"
-                    id="unbeliever"
-                    value={"unbeliever"}
-                    {...register("question13")}
-                  />
-                  <label htmlFor="unbeliever">&nbsp;Unbeliever</label>
-                </div>
+                <input
+                  type="radio"
+                  name="religion"
+                  id="hindu"
+                  value={"hindu"}
+                  {...register("question13")}
+                />
+                <label htmlFor="hindu">&nbsp;Hindu</label>
+              </div>
+              <div className="text-left">
+                <input
+                  type="radio"
+                  name="religion"
+                  id="judaism"
+                  value={"judaism"}
+                  {...register("question13")}
+                />
+                <label htmlFor="judaism">&nbsp;Judaism</label>
+              </div>
+              <div>
+                <input
+                  type="radio"
+                  name="religion"
+                  id="buddhist"
+                  value={"buddhist"}
+                  {...register("question13")}
+                />
+                <label htmlFor="buddhist">&nbsp;Buddhist</label>
+              </div>
+              <div>
+                <input
+                  type="radio"
+                  name="religion"
+                  id="other"
+                  value={"other"}
+                  {...register("question13")}
+                />
+                <label htmlFor="other">&nbsp;Other</label>
+              </div>
+              <div>
+                <input
+                  type="radio"
+                  name="religion"
+                  id="unbeliever"
+                  value={"unbeliever"}
+                  {...register("question13")}
+                />
+                <label htmlFor="unbeliever">&nbsp;Unbeliever</label>
               </div>
             </div>
           </div>
@@ -197,7 +193,7 @@ function SurveyForm({ survey, questions }) {
         <div className="mx-auto text-center">
           <button
             type="submit"
-            className="py-1 font-bold rounded-md w-64 border hover:text-zinc-800 hover:bg-white"
+            className="py-1.5 mt-2 font-bold rounded-md w-64 border hover:text-zinc-800 hover:bg-white"
           >
             Submit
           </button>

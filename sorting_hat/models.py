@@ -46,4 +46,4 @@ class Answer(models.Model):
         unique_together = ('survey', 'id')
 
     def __str__(self):
-        return f"Answers for Survey {self.survey.id} by User {self.user.id}"
+        return f"Answers for Survey {self.survey.id} by User {self.user}"

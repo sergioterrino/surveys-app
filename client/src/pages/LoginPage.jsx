@@ -39,7 +39,7 @@ function LoginPage() {
   });
 
   return (
-    <div className="flex items-center justify-center h-[calc(86vh-100px)]">
+    <div className="flex items-center justify-center mt-12">
       <div className="w-full max-w-md p-10 rounded-md bg-zinc-800">
         <h1 className="text-center text-3xl font-bold mb-4">Login</h1>
         <form onSubmit={onSubmit}>

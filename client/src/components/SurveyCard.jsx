@@ -52,7 +52,7 @@ function SurveyCard({ survey, isAuth, removeSurvey }) {
   return (
     <>
       {isAuth ? (
-        <div className="flex flex-col items-center justify-between gap-2 bg-zinc-800 rounded-lg border p-3 text-center">
+        <div className="flex flex-col items-center justify-between gap-2 bg-zinc-800 rounded-lg shadow p-3 text-center">
           <h3 className="font-bold text-lg">{survey.title}</h3>
           <p className="text-sm">{survey.description}</p>
           <div className="flex items-center justify-around w-full mt-2">
@@ -120,7 +120,7 @@ function SurveyCard({ survey, isAuth, removeSurvey }) {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-between gap-2 bg-zinc-800 rounded-lg border p-3 text-center">
+        <div className="flex flex-col items-center justify-between gap-2 bg-zinc-800 rounded-lg shadow p-3 text-center">
           <div>
             <h3 className="font-bold text-lg">{survey.title}</h3>
             {/* <p className="text-sm text-gray-500">by {username}</p> */}
@@ -128,7 +128,7 @@ function SurveyCard({ survey, isAuth, removeSurvey }) {
           <p className="text-sm">{survey.description}</p>
           <button
             onClick={goToSurveyPage}
-            className="px-2 py-0.5 rounded-lg font-bold bg-indigo-700 hover:bg-indigo-800 inline-flex items-center gap-1"
+            className="px-2 py-0.5 pt-1 rounded-lg font-bold bg-indigo-700 hover:bg-indigo-800 inline-flex items-center gap-1"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

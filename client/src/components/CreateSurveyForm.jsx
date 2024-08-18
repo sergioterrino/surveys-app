@@ -11,7 +11,7 @@ import {
 import { useAuth } from "../context/AuthContext";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import ConfirmModal from "./ConfirmModal";
+import Toast from "./Toast";
 
 function CreateSurveyForm() {
   const { user } = useAuth();
@@ -41,9 +41,10 @@ function CreateSurveyForm() {
     control, // permite que useForm controle los campos de tipo array
     name: "questions",
   });
-  const [oldQuestionsIds, setOldQuestionsIds] = useState();
+  const [oldQuestionsIds, setOldQuestionsIds] = useState([]); //no se si poner default []
   const MAX_QUESTIONS = 10; // Número máximo de preguntas permitidas
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showInfoSexToast, setShowInfoSexToast] = useState(false);
+  const [showInfoReligionToast, setShowInfoReligionToast] = useState(false);
 
   useEffect(() => {
     if (location.state?.fromUpdateSurvey && location.state?.survey) {
@@ -178,10 +179,13 @@ function CreateSurveyForm() {
         });
         const surveyId = surveyRes.data.id;
 
-        const questionPromises = filteredQuestions.map((question) =>
-          createQuestion({ survey: surveyId, text: question.text })
-        );
-        await Promise.all(questionPromises);
+        // Crear las preguntas asociadas a la encuesta una por una en orden
+        for (const question of filteredQuestions) {
+          const res = await createQuestion({
+            survey: surveyId,
+            text: question.text,
+          });
+        }
 
         navigate("/profile", { state: { fromCreateSurvey: true } });
         console.log("Survey and questions created successfully");
@@ -191,10 +195,30 @@ function CreateSurveyForm() {
     }
   };
 
+  const onInfoSex = (event) => {
+    event.preventDefault();
+    console.log("Toast info about sex");
+    setShowInfoSexToast((prev) => !prev); // para que se pueda resetear el estado
+  };
+
+  const onInfoReligion = (event) => {
+    event.preventDefault();
+    console.log("Toast info about religion");
+    setShowInfoReligionToast((prev) => !prev);
+  };
+
+  // Ordenar los campos por id antes de renderizarlos
+  const sortedFields = fields.sort((a, b) => a.id - b.id);
+  console.log("sortedFields ->", sortedFields);
+
+  useEffect(() => {
+    console.log("fieeeelds useEffect -> ", fields);
+  }, [fields]);
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="max-w-xl mx-auto p-9 pb-7 bg-zinc-800 rounded-md"
+      className="w-full mx-auto p-9 pb-7 bg-zinc-800 rounded-md"
     >
       <div>
         <label className="text-lg font-bold">Title:</label>
@@ -242,6 +266,21 @@ function CreateSurveyForm() {
               type="button"
               onClick={async () => {
                 const questionId = getValues(`questions.${index}.id`);
+                console.log("fields item,", item);
+                console.log("fields index", index);
+                console.log(
+                  "getValues(`questions.${index}.id`",
+                  getValues(`questions.${index}.id`)
+                );
+                console.log("fields[index].id ->", fields[index].id);
+
+                if (fields[index].id && !oldQuestionsIds.includes(questionId)) {
+                  console.log("¡entrnado en el primer if !");
+                  remove(index);
+                } else {
+                  console.log("que chingaaa");
+                }
+
                 if (oldQuestionsIds.includes(questionId)) {
                   try {
                     const res = await deleteQuestion(questionId);
@@ -288,7 +327,7 @@ function CreateSurveyForm() {
             id="addQuestion"
             onClick={() => {
               if (fields.length < MAX_QUESTIONS) {
-                append({ text: "" });
+                append({ id: Date.now().toString(), text: "" });
               } else {
                 toast.error("You can't add more than 10 questions");
               }
@@ -319,10 +358,34 @@ function CreateSurveyForm() {
         <div className="flex flex-col">
           <div className="flex gap-2 ml-4">
             <input type="checkbox" name="sex" id="sex" {...register("sex")} />
-            <label htmlFor="sex">
-              Ask about the sex &nbsp;{" "}
-              <span className="text-gray-500">[men / women]</span>
+            <label htmlFor="sex" className="flex">
+              Ask about the sex&nbsp;
+              <span className="text-gray-500">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="size-6"
+                  onClick={onInfoSex}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"
+                  />
+                </svg>
+              </span>
             </label>
+            {showInfoSexToast && (
+              <Toast
+                message="¿ Is the user: men or women ?"
+                position="bottom"
+                time={2000}
+                color="blue"
+              />
+            )}
           </div>
           <div className="flex gap-2 ml-4">
             <input type="checkbox" name="age" id="age" {...register("age")} />
@@ -335,12 +398,34 @@ function CreateSurveyForm() {
               id="religion"
               {...register("religion")}
             />
-            <label htmlFor="religion">
-              Ask about the religion &nbsp;{" "}
+            <label htmlFor="religion" className="flex">
+              Ask about the religion&nbsp;
               <span className="text-gray-500">
-                [christian / muslim / hindu / jewish / buddhist / Other / None]
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="size-6"
+                  onClick={onInfoReligion}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z"
+                  />
+                </svg>
               </span>
             </label>
+            {showInfoReligionToast && (
+              <Toast
+                message="¿ Is the user: christian, muslim, hindu, jewish, buddhist, other or unbeliever ?"
+                position="bottom"
+                time={3000}
+                color="blue"
+              />
+            )}
           </div>
         </div>
       </div>

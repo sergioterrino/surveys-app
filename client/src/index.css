@@ -2,7 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  background: #202020;
+body, html {
+  /* background: #202020; */
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-image: url('/images/frame.png');
+  background-repeat: no-repeat;
+  background-size: cover;
   color: white;
+}
+
+#root {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-image: url('/images/frame.png');
+  background-repeat: no-repeat;
+  background-size: cover;
 }
