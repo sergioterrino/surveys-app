@@ -46,3 +46,9 @@ input[type="range"]::-moz-range-thumb {
   pointer-events: none;
 }
 /* -------------------------------------------------------------------------------- */
+
+
+/* Degradado para imagen */
+.mask-image {
+  mask-image: linear-gradient(to bottom, black 97%, transparent);
+}

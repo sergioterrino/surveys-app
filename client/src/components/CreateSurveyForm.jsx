@@ -332,7 +332,7 @@ function CreateSurveyForm() {
                 toast.error("You can't add more than 10 questions");
               }
             }}
-            className=" bg-indigo-900 font-bold px-2 py-1 rounded-md inline-flex items-center hover:bg-indigo-950"
+            className=" bg-indigo-900 font-bold px-2 py-1 rounded-md inline-flex items-center hover:bg-indigo-950 shadow"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -432,7 +432,7 @@ function CreateSurveyForm() {
 
       <button
         type="submit"
-        className="w-full py-2 mt-3 font-bold border rounded-md hover:bg-white hover:text-zinc-700"
+        className="w-full py-2 mt-3 font-bold border rounded-md hover:bg-white hover:text-zinc-700 shadow"
       >
         {location.state?.fromUpdateSurvey ? "Update Survey" : "Create Survey"}
       </button>
