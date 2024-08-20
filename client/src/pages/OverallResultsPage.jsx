@@ -12,12 +12,11 @@ function OverallResultsPage() {
   const [survey, setSurvey] = useState([]);
   const [answers, setAnswers] = useState([]);
 
-  const [imageUrl, setImageUrl] = useState("");
-  const [imageSexUrl, setImageSexUrl] = useState("");
-  const [imageAgeUrl, setImageAgeUrl] = useState("");
-  const [imageReligionUrl, setImageReligionUrl] = useState("");
+  const [plotUrl, setPlotUrl] = useState("");
+  const [plotSexUrl, setPlotSexUrl] = useState("");
+  const [plotAgeUrl, setPlotAgeUrl] = useState("");
+  const [plotReligionUrl, setPlotReligionUrl] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-
 
   useEffect(() => {
     console.log("location.survey", location.state?.survey);
@@ -48,23 +47,23 @@ function OverallResultsPage() {
           // get timestamp para que haga nueva busqueda y no coja la imagen de la cache del browser
           const timestamp = new Date().getTime();
           // Establecer la URL de la imagen del gráfico
-          setImageUrl(
-            `http://127.0.0.1:8000/static/results_plot_${survey.id}.png?v=${timestamp}`
+          setPlotUrl(
+            `http://127.0.0.1:8000/static/plots/results_plot_${survey.id}.html?v=${timestamp}`
           );
           // Si la survey pregunta por sexo:
           if (survey.sex) {
-            setImageSexUrl(
-              `http://127.0.0.1:8000/static/results_plot_sex_${survey.id}.png?v=${timestamp}`
+            setPlotSexUrl(
+              `http://127.0.0.1:8000/static/plots/results_plot_sex_${survey.id}.html?v=${timestamp}`
             );
           }
           if (survey.age) {
-            setImageAgeUrl(
-              `http://127.0.0.1:8000/static/results_plot_age_${survey.id}.png?v=${timestamp}`
+            setPlotAgeUrl(
+              `http://127.0.0.1:8000/static/plots/results_plot_age_${survey.id}.html?v=${timestamp}`
             );
           }
           if (survey.religion) {
-            setImageReligionUrl(
-              `http://127.0.0.1:8000/static/results_plot_religion_${survey.id}.png?v=${timestamp}`
+            setPlotReligionUrl(
+              `http://127.0.0.1:8000/static/plots/results_plot_religion_${survey.id}.html?v=${timestamp}`
             );
           }
         } catch (error) {
@@ -76,9 +75,8 @@ function OverallResultsPage() {
   }, [survey]);
 
   useEffect(() => {
-    if (imageUrl) setIsLoading(false);
-  }, [imageUrl]);
-
+    if (plotUrl) setIsLoading(false);
+  }, [plotUrl]);
 
   return (
     <div>
@@ -86,10 +84,13 @@ function OverallResultsPage() {
         Overall Results
       </h1>
       <div className="px-1 md:px-4 rounded-md">
-        {survey && <h1 className="text-center font-bold text-2xl">{survey.title}</h1>}
-        {imageUrl ? (
-          <div className="mt-1 flex justify-center">
-            <img src={imageUrl} alt="Plot" className="rounded-lg" />
+        {survey && (
+          <h1 className="text-center font-bold text-2xl">{survey.title}</h1>
+        )}
+        {plotUrl ? (
+          <div className="mt-1 mb-1 flex justify-center ">
+            {/* <img src={plotUrl} alt="Plot" className="rounded-lg" /> */}
+            <iframe src={plotUrl} width="100%" height="600px"></iframe>
           </div>
         ) : (
           <div className="my-24 text-center">
@@ -100,36 +101,36 @@ function OverallResultsPage() {
           </div>
         )}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 justify-center my-2">
-          {imageSexUrl ? (
+          {plotSexUrl ? (
             <div className="flex justify-center">
-              <img src={imageSexUrl} alt="Plot of Sex" className="rounded-lg" />
+              <iframe
+                src={plotSexUrl}
+                width={"100%"}
+                height={"400px"}
+              ></iframe>
             </div>
-          ) : ('')}
-          {imageReligionUrl ? (
+          ) : (
+            ""
+          )}
+          {plotReligionUrl ? (
             <div className="flex justify-center">
-              <img
-                src={imageReligionUrl}
-                alt="Plot of Religion"
-                className="rounded-lg"
-              />
+              <iframe
+                src={plotReligionUrl}
+                width="100%"
+                height="400px"
+              ></iframe>
             </div>
-          ) : ('')}
+          ) : (
+            ""
+          )}
         </div>
-        {imageAgeUrl ? (
+        {plotAgeUrl ? (
           <div className="flex justify-center">
-            <img src={imageAgeUrl} alt="Plot of Age" className="rounded-lg" />
+            <iframe src={plotAgeUrl} width="100%" height="400px"></iframe>
           </div>
-        ) : ('')}
-
-        {/* {answers.map((answer, i) => (
-          <div key={i} className="bg-gray-500 mb-2">
-            <h1>Answer Id: {answer.id}</h1>
-            <h1>UserID = {answer.user}</h1>
-            <p>Result q1: {answer.question1}</p>
-            <p>Result q2: {answer.question2}</p>
-            <p>Result q3: {answer.question3 | null}</p>
-          </div>
-        ))} */}
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

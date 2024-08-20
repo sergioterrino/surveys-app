@@ -150,11 +150,11 @@ function SurveyForm({ survey, questions }) {
                 <input
                   type="radio"
                   name="religion"
-                  id="judaism"
-                  value={"judaism"}
+                  id="jewish"
+                  value={"jewish"}
                   {...register("question13")}
                 />
-                <label htmlFor="judaism">&nbsp;Judaism</label>
+                <label htmlFor="jewish">&nbsp;Jewish</label>
               </div>
               <div>
                 <input
