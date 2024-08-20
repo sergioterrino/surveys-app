@@ -7,19 +7,38 @@ import plotly.express as px
 
 
 def main(survey_id):
-
+    # Configuración
+    login_url = 'http://127.0.0.1:8000/api/login/'
     get_answers_url = f'http://127.0.0.1:8000/api/surveys/{survey_id}/results/overall/'
 
-    # Paso 1: Obtener los datos desde la API de DRF
+    # Credenciales de inicio de sesión
+    login_data = {
+        'email': 'lbd@gmail.com',
+        'password': '11111111'
+    }
+
+    # 1: Obtener el token de autenticación
     try:
-        response = requests.get(get_answers_url)
+        login_response = requests.post(login_url, data=login_data)
+        # Lanzar una excepción si la respuesta tiene un error
+        login_response.raise_for_status()
+        token = login_response.json().get('token')
+        print(f'Token obtenido: {token}')
+    except requests.exceptions.RequestException as e:  # Capturar cualquier excepción de requests
+        print(f'Error al obtener el token: {e}')
+        return
+
+    # Paso 2: Obtener los datos desde la API de DRF
+    headers = {'Authorization': f'Token {token}'}
+    try:
+        response = requests.get(get_answers_url, headers=headers)
         response.raise_for_status()
         data = response.json()
     except requests.exceptions.RequestException as e:
         print(f'Error al obtener los datos: {e}')
         return
 
-    # Paso 2: Procesar los datos
+    # Paso 3: Procesar los datos
     if data:
         df = pd.DataFrame(data)  # Convertir los datos a un DataFrame de Pandas
         # para el df_main solo quiero las q10s preguntas, así que borro las otras
@@ -41,7 +60,7 @@ def main(survey_id):
         print('No se pudieron obtener los datos. No data of response.')
         return
 
-    # Paso 3: Generar gráficos
+    # Paso 4: Generar gráficos
 
     # ---- Gráfico MAIN -> --------------------------------------------------------
     result_columns = [f'question{i}' for i in range(1, 11)]
