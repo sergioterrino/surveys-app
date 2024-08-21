@@ -69,9 +69,14 @@ def main(survey_id):
         y='mean_score',
         title='Mean Score by Question',
         labels={'question': 'Question', 'mean_score': 'Mean Score'},
+        
         color='question',  # color distinto para cada barra
         color_discrete_sequence=px.colors.qualitative.Bold,  # Elegir una paleta de colores
     )
+    
+    # Añadir anotaciones de texto a cada barra
+    fig.update_traces(texttemplate='%{y:.1f}', textposition='outside')
+
 
     fig.update_layout(
         template='plotly_dark',  # Tema oscuro
@@ -83,7 +88,7 @@ def main(survey_id):
         margin=dict(l=0, r=0, t=70, b=0),
         title={'x': 0.5, 'y': 0.95}
     )
-    fig.write_html(f'static/plots/results_plot_{survey_id}.html')
+    fig.write_image(f'static/plots/results_plot_{survey_id}.png')
 
     #############################################################################
 
@@ -103,15 +108,17 @@ def main(survey_id):
             template='plotly_dark',
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',
-            margin=dict(l=0, r=0, t=30, b=0),
+            margin=dict(l=0, r=0, t=50, b=0),
             legend=dict(
-                orientation='h',
-                xanchor='center',
-                x=0.5,
+                orientation='v',
+
+                x=0.8,
             ),
             title={'x': 0.5},
+            font=dict(size=19)
         )
-        fig_sex.write_html(f'static/plots/results_plot_sex_{survey_id}.html')
+        
+        fig_sex.write_image(f'static/plots/results_plot_sex_{survey_id}.png')
     else:
         print("No hay datos de sexo disponibles para graficar.")
     ###########################################################################
@@ -144,16 +151,16 @@ def main(survey_id):
             template='plotly_dark',
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',
-            margin=dict(l=0, r=0, t=30, b=0),
+            margin=dict(l=0, r=0, t=50, b=0),
             legend=dict(
-                orientation='h',
-                xanchor='center',
-                x=0.5
+                orientation='v',
+                xanchor='right',
             ),
-            title={'x': 0.5}
+            title={'x': 0.5},
+            font=dict(size=18)
         )
-        fig_rel.write_html(
-            f'static/plots/results_plot_religion_{survey_id}.html')
+        fig_rel.write_image(
+            f'static/plots/results_plot_religion_{survey_id}.png')
     else:
         print("No hay datos de Religion disponibles para graficar.")
     ##########################################################################
@@ -167,7 +174,7 @@ def main(survey_id):
         })
 
         fig_age = px.histogram(
-            df_age_plot, x='age', y='count', title='Age of the respondents', nbins=10, )
+            df_age_plot, x='age', y='count', title='Age of the respondents', nbins=10, labels={'age': 'Age', 'count': 'Persons'})
 
         fig_age.update_layout(
             template='plotly_dark',
@@ -176,7 +183,7 @@ def main(survey_id):
             margin=dict(l=0, t=70, r=0, b=0),
             title={'x': 0.5, 'y': 0.90}
         )
-        fig_age.write_html(f'static/plots/results_plot_age_{survey_id}.html')
+        fig_age.write_image(f'static/plots/results_plot_age_{survey_id}.png')
     else:
         print("No hay datos de edad disponibles para graficar.")
     ############################################################################
