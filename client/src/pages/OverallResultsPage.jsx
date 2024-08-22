@@ -92,7 +92,7 @@ function OverallResultsPage() {
       {/* <h1 className="text-center text-2xl pb-1 mb-3 bg-zinc-600 rounded-md">
         Overall Results
       </h1> */}
-      <div className="relative flex items-center justify-center text-2xl pb-1 mb-3 bg-zinc-600 rounded-md">
+      <div className="relative flex items-center justify-center text-2xl rounded-md">
         <div>
           <h1 className="text-2xl">Overall Results</h1>
         </div>
@@ -100,7 +100,7 @@ function OverallResultsPage() {
           <div>
             <button
               onClick={() => setShowQuestions((prev) => !prev)}
-              className="pr-2 pt-1 rounded-lg hover:text-cyan-950"
+              className="pr-2 pt-1 rounded-lg hover:text-cyan-200"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -127,7 +127,7 @@ function OverallResultsPage() {
               <div className="relative max-w-2xl">
                 <button
                   onClick={() => setShowQuestions(false)}
-                  className="absolute top-1 right-1 pl-1 hover:text-zinc-300"
+                  className="absolute top-1 right-5 pl-1 hover:text-zinc-300"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -147,7 +147,7 @@ function OverallResultsPage() {
 
                 <div
                   onClick={(e) => e.stopPropagation()}
-                  className="bg-zinc-800 rounded-lg px-8 pt-2 pb-3 text-lg"
+                  className="bg-zinc-800 rounded-2xl px-8 mx-3 pt-2 pb-3 text-lg"
                 >
                   <h1 className="text-xl mb-3 text-gray-300">
                     Survey questions text
@@ -165,6 +165,8 @@ function OverallResultsPage() {
           )}
         </div>
       </div>
+      <hr className="w-full border-t border-gray-300 mt-2 mb-2" />
+
       <div className="px-1 md:px-4 rounded-md">
         {survey && (
           <h1 className="flex items-center justify-center font-bold text-2xl">

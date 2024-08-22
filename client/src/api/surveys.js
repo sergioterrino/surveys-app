@@ -2,7 +2,8 @@ import axios from './axios'
 
 export const createSurvey = (survey) => axios.post('/surveys/', survey)
 
-export const getSurveys = () => axios.get('/surveys/')
+// export const getSurveys = () => axios.get('/surveys/')
+export const getSurveys = (page = 1) => axios.get(`/surveys/?page=${page}`)
 
 export const getUserSurveys = () => axios.get('/profile/')
 
