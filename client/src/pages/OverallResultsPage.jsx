@@ -186,7 +186,7 @@ function OverallResultsPage() {
             </h1> */}
           </div>
         )}
-        <div className="grid grid-cols-1 md:grid-cols-2 xxs:gap-4 xs:gap-4 md:gap-0 justify-center my-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 xs:gap-4 xxs:gap-4 md:gap-0 justify-center my-2">
           {plotSexUrl ? (
             <div className="flex justify-center">
               <img src={plotSexUrl} alt="Plot" className="rounded-lg" />

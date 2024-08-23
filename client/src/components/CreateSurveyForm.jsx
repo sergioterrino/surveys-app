@@ -225,7 +225,7 @@ function CreateSurveyForm() {
         <input
           placeholder="Title"
           {...register("title", { required: true })}
-          className="w-full px-4 py-2 mb-2 rounded-md bg-zinc-500 "
+          className="w-full px-4 py-2 mb-2 rounded-md bg-zinc-700 "
         />
         {errors.title && (
           <span className="font-bold text-red-700">Title is required</span>
@@ -237,7 +237,7 @@ function CreateSurveyForm() {
         <textarea
           placeholder="Description"
           {...register("description", { required: true })}
-          className="w-full px-4 py-2 mb-2 rounded-md bg-zinc-500 "
+          className="w-full px-4 py-2 mb-2 rounded-md bg-zinc-700 "
         ></textarea>
         {errors.description && (
           <span className="font-bold text-red-700">
@@ -255,7 +255,7 @@ function CreateSurveyForm() {
             <textarea
               {...register(`questions.${index}.text`)}
               placeholder="Enter question text"
-              className="w-full px-4 py-2 rounded-md bg-zinc-500 "
+              className="w-full px-4 py-2 rounded-md bg-zinc-700 "
             />
             {errors.questions?.[index]?.text && (
               <span className="font-bold text-red-700">

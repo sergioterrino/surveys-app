@@ -7,8 +7,11 @@ export default {
   theme: {
     extend: {
       screens: {
-        'xxs': '275px',
-        'xs': '475px',
+        'xs': '275px',
+        'xxs': '475px',
+        'xxxs': '515px',
+        'xxxxs': '570px',
+        'llg': '1170px'
       },
       colors: {
         'range-thumb': '#394448', // Color del thumb

@@ -53,20 +53,20 @@ function SurveyCard({ survey, isAuth, removeSurvey }) {
 
   return (
     <>
-      <div className="flex flex-col gap-2 bg-neutral-600 rounded-2xl shadow-2xl p-3 pt-2 pb-3">
+      <div className="flex flex-col gap-2 bg-cyan-950  rounded-2xl shadow-2xl p-3 pt-2 pb-3">
         <div>
           <h3 className="font-bold text-lg">{survey.title}</h3>
           <hr className="w-full border-t border-gray-300 mt-2" />
         </div>
 
-        <p className="text-md text-left">{survey.description}</p>
+        <p className="text-md text-left text-slate-300">{survey.description}</p>
 
         <div className="mt-auto flex items-center justify-around w-full">
           {isAuth ? (
             <>
               <button
                 onClick={resultsSurvey}
-                className="px-2 py-1.5 inline-flex items-center rounded-lg font-bold bg-indigo-700 hover:bg-indigo-800 shadow"
+                className="px-2 py-1.5 inline-flex items-center rounded-lg font-bold border hover:bg-indigo-700 shadow"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -86,7 +86,7 @@ function SurveyCard({ survey, isAuth, removeSurvey }) {
               </button>
               <button
                 onClick={updateSurvey}
-                className="px-2 py-1.5 inline-flex items-center rounded-lg font-bold bg-blue-700 hover:bg-blue-800 shadow"
+                className="px-2 py-1.5 inline-flex items-center rounded-lg font-bold border hover:bg-blue-700 shadow"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -135,7 +135,7 @@ function SurveyCard({ survey, isAuth, removeSurvey }) {
             <>
               <button
                 onClick={goToSurveyPage}
-                className="px-4 py-2 rounded-lg font-bold bg-indigo-700 hover:bg-indigo-800 inline-flex items-center gap-1 shadow"
+                className="px-4 py-2 rounded-lg font-bold border hover:bg-indigo-800 inline-flex items-center gap-1 shadow"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
