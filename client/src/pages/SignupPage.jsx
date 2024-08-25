@@ -24,7 +24,7 @@ function SignupPage() {
 
   return (
     <div className="flex items-center justify-center mt-12">
-      <div className="max-w-md w-full p-10 rounded-md bg-zinc-800">
+      <div className="max-w-md w-full p-10 rounded-xl bg-zinc-800">
         <form onSubmit={onSubmit}>
           <h1 className="text-3xl font-bold text-center mb-2">Create Account</h1>
           <input
@@ -57,7 +57,7 @@ function SignupPage() {
             className="w-full px-4 py-2 my-2 rounded-md bg-zinc-700"
           />
           {errors.password && <div className="text-red-700 font-bold pl-2">Password is required</div>}
-          <button type="submit" className="w-full px-4 py-2 my-4 mb-6 border rounded-md font-bold hover:bg-white hover:text-zinc-700">Create</button>
+          <button type="submit" className="w-full px-4 py-2 my-4 mb-6 border rounded-xl font-bold hover:bg-white hover:text-zinc-700">Create</button>
           <div className="flex justify-center gap-2 mt-2">
             <p>Do you have already an account?</p>
             <button onClick={goToLogin} className="font-bold text-sky-500 hover:text-sky-700">Login</button>

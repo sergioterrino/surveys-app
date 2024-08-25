@@ -89,10 +89,7 @@ function OverallResultsPage() {
 
   return (
     <div>
-      {/* <h1 className="text-center text-2xl pb-1 mb-3 bg-zinc-600 rounded-md">
-        Overall Results
-      </h1> */}
-      <div className="relative flex items-center justify-center text-2xl rounded-md">
+      <div className="relative flex items-center justify-center text-2xl">
         <div>
           <h1 className="text-2xl">Overall Results</h1>
         </div>
@@ -122,7 +119,7 @@ function OverallResultsPage() {
           {showQuestions && (
             <div
               onClick={() => setShowQuestions(false)}
-              className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex flex-col justify-center items-center"
+              className="fixed top-0 left-0 z-1 w-full h-full bg-black bg-opacity-50 flex flex-col justify-center items-center"
             >
               <div className="relative max-w-2xl">
                 <button

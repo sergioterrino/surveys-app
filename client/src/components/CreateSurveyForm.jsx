@@ -218,17 +218,22 @@ function CreateSurveyForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-full mx-auto p-9 pb-7 bg-zinc-800 rounded-md"
+      className="w-full mx-auto p-9 pb-7 bg-zinc-800 rounded-xl"
     >
       <div>
         <label className="text-lg font-bold">Title:</label>
         <input
           placeholder="Title"
-          {...register("title", { required: true })}
+          {...register("title", { required: true, maxLength: 60 })}
           className="w-full px-4 py-2 mb-2 rounded-md bg-zinc-700 "
         />
-        {errors.title && (
+        {errors.title?.type === "required" && (
           <span className="font-bold text-red-700">Title is required</span>
+        )}
+        {errors.title?.type === "maxLength" && (
+          <span className="font-bold text-red-700">
+            Title can't exceed 60 characters
+          </span>
         )}
       </div>
 
@@ -236,12 +241,17 @@ function CreateSurveyForm() {
         <label className="text-lg font-bold">Description:</label>
         <textarea
           placeholder="Description"
-          {...register("description", { required: true })}
+          {...register("description", { required: true, maxLength: 180 })}
           className="w-full px-4 py-2 mb-2 rounded-md bg-zinc-700 "
         ></textarea>
-        {errors.description && (
+        {errors.description?.type === "required" && (
           <span className="font-bold text-red-700">
             Description is required
+          </span>
+        )}
+        {errors.title?.type === "maxLength" && (
+          <span className="font-bold text-red-700">
+            Description can't exceed 180 characters
           </span>
         )}
       </div>
@@ -249,76 +259,88 @@ function CreateSurveyForm() {
       <div>
         <label className="text-lg font-bold">Questions:</label>
         {fields.map((item, index) => (
-          <div key={item.id} className="flex gap-0.5 mb-3">
-            {/* Input hidden para almacenar el ID de la pregunta en el form*/}
-            <input type="hidden" {...register(`questions.${index}.id`)} />
-            <textarea
-              {...register(`questions.${index}.text`)}
-              placeholder="Enter question text"
-              className="w-full px-4 py-2 rounded-md bg-zinc-700 "
-            />
-            {errors.questions?.[index]?.text && (
-              <span className="font-bold text-red-700">
-                Question is required
-              </span>
-            )}
-            <button
-              type="button"
-              onClick={async () => {
-                const questionId = getValues(`questions.${index}.id`);
-                console.log("fields item,", item);
-                console.log("fields index", index);
-                console.log(
-                  "getValues(`questions.${index}.id`",
-                  getValues(`questions.${index}.id`)
-                );
-                console.log("fields[index].id ->", fields[index].id);
+          <>
+            <div key={item.id} className="flex gap-0.5 mb-3">
+              {/* Input hidden para almacenar el ID de la pregunta en el form*/}
+              <input type="hidden" {...register(`questions.${index}.id`)} />
+              <textarea
+                {...register(`questions.${index}.text`, { required: true, maxLength: 150 })}
+                placeholder="Enter question text"
+                className="w-full px-4 py-2 rounded-md bg-zinc-700 "
+              />
+              <button
+                type="button"
+                onClick={async () => {
+                  const questionId = getValues(`questions.${index}.id`);
+                  console.log("fields item,", item);
+                  console.log("fields index", index);
+                  console.log(
+                    "getValues(`questions.${index}.id`",
+                    getValues(`questions.${index}.id`)
+                  );
+                  console.log("fields[index].id ->", fields[index].id);
 
-                if (fields[index].id && !oldQuestionsIds.includes(questionId)) {
-                  console.log("¡entrnado en el primer if !");
-                  remove(index);
-                } else {
-                  console.log("que chingaaa");
-                }
-
-                if (oldQuestionsIds.includes(questionId)) {
-                  try {
-                    const res = await deleteQuestion(questionId);
-                    console.log(res);
-                    if (res.status === 204) {
-                      toast.success("Question deleted successfully");
-                      remove(index);
-                      setOldQuestionsIds(
-                        oldQuestionsIds.filter((id) => id !== questionId)
-                      );
-                    } else {
-                      toast.error("Error deleting the question");
-                    }
-                  } catch (error) {
-                    console.log("Error deleting question", error);
+                  if (
+                    fields[index].id &&
+                    !oldQuestionsIds.includes(questionId)
+                  ) {
+                    console.log("¡entrnado en el primer if !");
+                    remove(index);
+                  } else {
+                    console.log("que chingaaa");
                   }
-                } else {
-                  console.log("No está en oldQuestionsIds");
-                }
-              }}
-              className="bg-red-700 font-bold rounded-md px-1 hover:bg-red-900 h-16"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="size-6"
+
+                  if (oldQuestionsIds.includes(questionId)) {
+                    try {
+                      const res = await deleteQuestion(questionId);
+                      console.log(res);
+                      if (res.status === 204) {
+                        toast.success("Question deleted successfully");
+                        remove(index);
+                        setOldQuestionsIds(
+                          oldQuestionsIds.filter((id) => id !== questionId)
+                        );
+                      } else {
+                        toast.error("Error deleting the question");
+                      }
+                    } catch (error) {
+                      console.log("Error deleting question", error);
+                    }
+                  } else {
+                    console.log("No está en oldQuestionsIds");
+                  }
+                }}
+                className="bg-red-700 font-bold rounded-md px-1 hover:bg-red-900 h-16"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-                />
-              </svg>
-            </button>
-          </div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="size-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div>
+              {errors.questions?.[index]?.text?.type === "required" && (
+                <span className="font-bold text-red-700">
+                  Question is required
+                </span>
+              )}
+              {errors.questions?.[index]?.text?.type === "maxLength" && (
+                <span className="font-bold text-red-700">
+                  The Question can't exceed 150 characters
+                </span>
+              )}
+            </div>
+          </>
         ))}
 
         <div className="flex justify-center mb-3">
@@ -332,7 +354,7 @@ function CreateSurveyForm() {
                 toast.error("You can't add more than 10 questions");
               }
             }}
-            className=" bg-indigo-900 font-bold px-2 py-1 rounded-md inline-flex items-center hover:bg-indigo-950 shadow"
+            className=" bg-indigo-900 font-bold px-2 py-1 rounded-lg inline-flex items-center hover:bg-indigo-950 shadow"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -432,7 +454,7 @@ function CreateSurveyForm() {
 
       <button
         type="submit"
-        className="w-full py-2 mt-3 font-bold border rounded-md hover:bg-white hover:text-zinc-700 shadow"
+        className="w-full py-2 mt-3 font-bold border rounded-xl hover:bg-white hover:text-zinc-700 shadow"
       >
         {location.state?.fromUpdateSurvey ? "Update Survey" : "Create Survey"}
       </button>

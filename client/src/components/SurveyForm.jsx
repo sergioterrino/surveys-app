@@ -39,14 +39,14 @@ function SurveyForm({ survey, questions }) {
   });
 
   return (
-    <div className="w-full p-4 flex flex-col justify-center">
+    <div className="w-full p-4 px-0 pt-3 md:px-18 lg:mx-18 xl:px-28 flex flex-col justify-center">
       <form onSubmit={onSubmit}>
         {questions.map((question, i) => (
           <div
             key={i}
-            className="text-center rounded-md p-2 pb-4 bg-zinc-600 mb-2"
+            className="text-center rounded-xl p-2 pb-4 bg-cyan-950 mb-2"
           >
-            <h3 className="text-lg font-semibold mb-2.5">
+            <h3 className="text-justify text-lg font-semibold mx-2 mb-2.5">
               {question.text}
             </h3>
             <div className="range-wrapper">
@@ -70,7 +70,7 @@ function SurveyForm({ survey, questions }) {
         ))}
 
         {survey.sex && (
-          <div className="flex gap-10 mb-2 items-center text-center rounded-md py-2 pl-4 bg-zinc-700">
+          <div className="flex gap-10 mb-2 items-center text-center rounded-xl py-2 pl-4 bg-cyan-950">
             <h1 className="font-bold text-lg">¿What is your sex?</h1>
             <div className="pt-0.5">
               <input
@@ -95,14 +95,14 @@ function SurveyForm({ survey, questions }) {
         )}
 
         {survey.age && (
-          <div className="flex gap-10 mb-2 items-center rounded-md py-2 pl-4 bg-zinc-700">
+          <div className="flex gap-10 mb-2 items-center rounded-xl py-2 pl-4 bg-cyan-950">
             <h1 className="font-bold text-lg">¿How old are you?</h1>
             <div>
               <input
                 type="number"
                 name="age"
                 id="age"
-                className="text-white w-11 pl-2 rounded-md bg-zinc-500"
+                className="text-white w-11 pl-2 rounded-lg bg-zinc-600"
                 {...register("question12")}
               />
               <span>&nbsp; years old</span>
@@ -111,7 +111,7 @@ function SurveyForm({ survey, questions }) {
         )}
 
         {survey.religion && (
-          <div className="flex flex-col mb-2 rounded-md py-2 pl-4 bg-zinc-700">
+          <div className="flex flex-col mb-2 rounded-xl py-2 pl-4 bg-cyan-950">
             <h1 className="font-bold text-lg">
               ¿What religion do you practice?
             </h1>
@@ -193,7 +193,7 @@ function SurveyForm({ survey, questions }) {
         <div className="mx-auto text-center">
           <button
             type="submit"
-            className="py-1.5 mt-2 font-bold rounded-md w-64 border hover:text-zinc-800 hover:bg-white"
+            className="py-2 mt-2 font-bold rounded-xl w-80 border hover:text-zinc-800 hover:bg-white"
           >
             Submit
           </button>

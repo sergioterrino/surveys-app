@@ -40,7 +40,7 @@ function LoginPage() {
 
   return (
     <div className="flex items-center justify-center mt-12">
-      <div className="w-full max-w-md p-10 rounded-md bg-zinc-800">
+      <div className="w-full max-w-md p-10 rounded-xl bg-zinc-800">
         <h1 className="text-center text-3xl font-bold mb-4">Login</h1>
         <form onSubmit={onSubmit}>
           <input
@@ -60,7 +60,7 @@ function LoginPage() {
           />
           {errors.password && <div className="text-red-700 font-bold pl-2">Password is required</div>}
           <button type="submit" className="w-full px-4 py-2 my-4 bg-zinc-800 
-           hover:text-zinc-700 hover:bg-white rounded-lg border font-bold">Login</button>
+           hover:text-zinc-700 hover:bg-white rounded-xl border font-bold">Login</button>
           <div className="flex justify-center gap-2 mt-6">
             <p>You don't have an account? </p>
             <button onClick={goToSignup} className="font-bold text-sky-500 hover:text-sky-700">Signup</button>

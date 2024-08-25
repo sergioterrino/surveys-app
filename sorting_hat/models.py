@@ -2,8 +2,8 @@ from django.db import models
 
 
 class Survey(models.Model):
-    title = models.CharField(max_length=255)
-    description = models.TextField()
+    title = models.CharField(max_length=60)
+    description = models.TextField(max_length=180)
     sex = models.BooleanField(null=True)
     age = models.BooleanField(null=True)
     religion = models.BooleanField(null=True)
@@ -15,7 +15,7 @@ class Survey(models.Model):
 
 class Question(models.Model):
     survey = models.ForeignKey(Survey, related_name='questions', on_delete=models.CASCADE)
-    text = models.TextField()
+    text = models.TextField(max_length=150)
 
     class Meta:
         unique_together = ('survey', 'id')  # Ensure combination of survey and id is unique

@@ -32,8 +32,9 @@ function SurveyPage() {
   }, [survey]);
 
   return (
-    <div>
-      <h1 className="text-font text-center text-2xl w-full pb-1 rounded-md bg-zinc-600">{survey.title}</h1>
+    <div className=" lg:px-12 xl:px-36">
+      <h1 className="text-font text-center text-2xl w-full pb-1">{survey.title}</h1>
+      <hr />
       <SurveyForm survey={survey} questions={questions}></SurveyForm>
     </div>
   );

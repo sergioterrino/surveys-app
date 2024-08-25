@@ -23,11 +23,11 @@ function ConfirmModal({ showModal, setShowModal, onConfirm, message }) {
   return showModal ? (
     <div className='fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center'
       onClick={() => setShowModal(false)}>
-      <div className='bg-zinc-800 p-8 rounded-md' onClick={(e) => e.stopPropagation()}>
+      <div className='bg-zinc-800 p-8 rounded-xl' onClick={(e) => e.stopPropagation()}>
         <p>{message}</p>
         <div className='flex justify-around gap-x-4 mt-6'>
-          <button className='bg-zinc-500 rounded-md px-4 py-2' onClick={() => setShowModal(false)}>Cancel</button>
-          <button className='bg-red-600 rounded-md px-4 py-2' onClick={onConfirm}>Confirm</button>
+          <button className='bg-zinc-500 rounded-xl px-4 py-2' onClick={() => setShowModal(false)}>Cancel</button>
+          <button className='bg-red-600 rounded-xl px-4 py-2' onClick={onConfirm}>Confirm</button>
         </div>
       </div>
     </div>

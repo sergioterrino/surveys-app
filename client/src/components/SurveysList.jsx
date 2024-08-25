@@ -28,7 +28,7 @@ function SurveysList({
 
   return (
     <div className="w-full px-0 sm:px-6 pb-4">
-      <h1 className="text-center text-2xl mb-1 bg-transparent rounded-md pb-1">
+      <h1 className="text-center text-2xl mb-1 bg-transparent pb-1">
         {title}
       </h1>
       <hr className="w-full border-t border-gray-300 mb-3" />

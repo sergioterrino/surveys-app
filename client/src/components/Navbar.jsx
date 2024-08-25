@@ -75,7 +75,7 @@ function Navbar() {
           </svg>
         </button>
         {isDropdownOpen && (
-          <ul className="absolute right-0 top-16 mt-2 w-48 bg-zinc-800 rounded-md shadow-lg py-1 z-1">
+          <ul className="absolute right-0 top-16 mt-2 w-48 bg-zinc-800 rounded-xl shadow-lg py-1 z-1">
             {isAuthenticated ? (
               <>
                 <li>
