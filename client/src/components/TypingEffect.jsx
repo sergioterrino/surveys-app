@@ -13,22 +13,27 @@ import { useEffect, useState } from "react";
  *
  * @returns {JSX.Element} Un elemento <span> que contiene el texto con el efecto de escritura.
  */
-function TypingEffect({ text, speed }) {
+function TypingEffect({ text, speed, loop }) {
   const [displayedText, setDisplayedText] = useState("");
 
   useEffect(() => {
     let index = 0;
     const interval = setInterval(() => {
-      setDisplayedText((prev) => prev + text[index]); // prev es el estado actual de dicha prop, el texto que había
-      index++;
-      if (index === text.length) {
-        index = 0;
-        setDisplayedText(""); // para que lo haga en loop
+      if (index+1 < text.length) {
+        setDisplayedText((prev) => prev + text[index]); // prev es el estado actual de dicha prop, el texto que había
+        index++;
+      } else {
+        if (loop) {
+          index = 0;
+          setDisplayedText(""); // para que lo haga en loop
+        } else {
+          clearInterval(interval);
+        }
       }
     }, speed);
 
     return () => clearInterval(interval); // limpia el intervalo cuando el componente se desmonta
-  }, [text, speed]);
+  }, [text, speed, loop]);
 
   return <span>{displayedText}</span>;
 }

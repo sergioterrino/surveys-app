@@ -49,7 +49,7 @@ function Navbar() {
 
   return (
     <nav className="bg-transparent flex gap-y-3 flex-row items-center justify-between mt-3 pl-2 pr-8 py-3 rounded-lg">
-      <Link to="/">
+      <Link to="/home">
         <button className="text-2xl font-bold z-50 bg-transparent flex items-center">
         <img src="/images/hat.png" className="w-24" /><img src="/images/sortingHat.png" className="relative right-4"/>
         </button>
@@ -80,10 +80,10 @@ function Navbar() {
               <>
                 <li>
                   <Link
-                    to="/"
+                    to="/home"
                     onClick={closeDropdown}
                     className={`block px-4 py-2 text-md hover:text-zinc-700 font-bold hover:bg-white ${
-                      path === "/" ? "text-indigo-500" : ""
+                      path === "/home" ? "text-indigo-500" : ""
                     }`}
                   >
                     Home
@@ -129,7 +129,7 @@ function Navbar() {
                       closeDropdown();
                       setShowModalLogout(false);
                       logout();
-                      navigate('/')
+                      navigate('/home')
                     }}
                   />
                 </li>
@@ -138,10 +138,10 @@ function Navbar() {
               <>
                 <li>
                   <Link
-                    to="/"
+                    to="/home"
                     onClick={closeDropdown}
                     className={`block px-4 py-2 text-md hover:text-zinc-700 font-bold hover:bg-white ${
-                      path === "/" ? "text-indigo-500" : ""
+                      path === "/home" ? "text-indigo-500" : ""
                     }`}
                   >
                     Home
