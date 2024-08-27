@@ -29,7 +29,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='yoursecretkey')
 # DEBUG = True
 DEBUG = 'RENDER' not in os.environ # en desarrollo se pone en True, en producción en False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://stb-sortinghat.onrender.com/']
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
