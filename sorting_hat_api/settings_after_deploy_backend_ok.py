@@ -139,19 +139,6 @@ if not DEBUG:
     # Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-    
-    
-    
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # Añadido para buscar archivos estáticos en 'static'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Añadido para que Django sirva archivos estáticos
-
-# Asegúrate de que esté incluida 'client/dist' en las rutas estáticas
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-    os.path.join(BASE_DIR, 'client', 'dist')
-]
-
-
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

@@ -17,8 +17,11 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("sorting_hat.urls")), # incluye las urls del file urls.py del directorio sorting_hat
+    # path("", include("sorting_hat.urls")), # incluye las urls del file urls.py del directorio sorting_hat
+    path("api/", include("sorting_hat.urls")),  # Mantén las rutas de la API separadas
+    path("", TemplateView.as_view(template_name="index.html")),  # Sirve la aplicación React para cualquier otra URL
 ]
