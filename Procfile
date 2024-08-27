@@ -1,0 +1,1 @@
+web: gunicorn sorting_hat_api.wsgi --log-file -
