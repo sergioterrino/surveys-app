@@ -1,1 +1,1 @@
-web: gunicorn sorting_hat_api.wsgi --log-file -
+web: gunicorn sorting_hat_api.wsgi:application --log-file -
