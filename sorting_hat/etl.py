@@ -5,10 +5,17 @@ import seaborn as sns
 import numpy as np
 import plotly.express as px
 
+import os
+from django.conf import settings
+
 
 def main(survey_id):
 
     get_answers_url = f'http://127.0.0.1:8000/api/surveys/{survey_id}/results/overall/'
+    
+    # Crear el directorio de gráficos si no existe -- Esto es para el despliegue en Render
+    plots_dir = os.path.join(settings.BASE_DIR, 'static', 'plots')
+    os.makedirs(plots_dir, exist_ok=True)
 
     # Paso 1: Obtener los datos desde la API de DRF
     try:
@@ -88,7 +95,8 @@ def main(survey_id):
         margin=dict(l=0, r=0, t=70, b=0),
         title={'x': 0.5, 'y': 0.95}
     )
-    fig.write_image(f'static/plots/results_plot_{survey_id}.png')
+    # fig.write_image(f'static/plots/results_plot_{survey_id}.png')
+    fig.write_image(os.path.join(plots_dir, f'results_plot_{survey_id}.png'))
 
     #############################################################################
 
@@ -118,7 +126,8 @@ def main(survey_id):
             font=dict(size=19)
         )
         
-        fig_sex.write_image(f'static/plots/results_plot_sex_{survey_id}.png')
+        # fig_sex.write_image(f'static/plots/results_plot_sex_{survey_id}.png')
+        fig_sex.write_image(os.path.join(plots_dir, f'results_plot_sex_{survey_id}.png'))
     else:
         print("No hay datos de sexo disponibles para graficar.")
     ###########################################################################
@@ -159,8 +168,9 @@ def main(survey_id):
             title={'x': 0.5},
             font=dict(size=18)
         )
-        fig_rel.write_image(
-            f'static/plots/results_plot_religion_{survey_id}.png')
+        # fig_rel.write_image(
+        #     f'static/plots/results_plot_religion_{survey_id}.png')
+        fig_rel.write_image(os.path.join(plots_dir, f'results_plot_religion_{survey_id}.png'))
     else:
         print("No hay datos de Religion disponibles para graficar.")
     ##########################################################################
@@ -183,7 +193,8 @@ def main(survey_id):
             margin=dict(l=0, t=70, r=0, b=0),
             title={'x': 0.5, 'y': 0.90}
         )
-        fig_age.write_image(f'static/plots/results_plot_age_{survey_id}.png')
+        # fig_age.write_image(f'static/plots/results_plot_age_{survey_id}.png')
+        fig_age.write_image(os.path.join(plots_dir, f'results_plot_age_{survey_id}.png'))
     else:
         print("No hay datos de edad disponibles para graficar.")
     ############################################################################

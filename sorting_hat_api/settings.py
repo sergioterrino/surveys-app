@@ -22,7 +22,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = "django-insecure-^$rka$9#a2l*ku7y*@g)woe%m_brv!k81_@+ol07(hag%zsluo"
 SECRET_KEY = os.environ.get('SECRET_KEY', default='yoursecretkey')
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -134,6 +133,7 @@ STATIC_URL = "/static/"
 # añadido para que se pueda acceder a los archivos estáticos /static/
 # STATICFILES_DIRS = [BASE_DIR / "static"]
 # STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 if not DEBUG:
     # Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)

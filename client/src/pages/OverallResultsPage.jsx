@@ -57,22 +57,22 @@ function OverallResultsPage() {
           const timestamp = new Date().getTime();
           // Establecer la URL de la imagen del gráfico
           setPlotUrl(
-            `http://127.0.0.1:8000/static/plots/results_plot_${survey.id}.png?v=${timestamp}`
+            `https://sortinghat-api.onrender.com/static/plots/results_plot_${survey.id}.png?v=${timestamp}`
           );
           // Si la survey pregunta por sexo:
           if (survey.sex) {
             setPlotSexUrl(
-              `http://127.0.0.1:8000/static/plots/results_plot_sex_${survey.id}.png?v=${timestamp}`
+              `https://sortinghat-api.onrender.com/static/plots/results_plot_sex_${survey.id}.png?v=${timestamp}`
             );
           }
           if (survey.age) {
             setPlotAgeUrl(
-              `http://127.0.0.1:8000/static/plots/results_plot_age_${survey.id}.png?v=${timestamp}`
+              `https://sortinghat-api.onrender.com/static/plots/results_plot_age_${survey.id}.png?v=${timestamp}`
             );
           }
           if (survey.religion) {
             setPlotReligionUrl(
-              `http://127.0.0.1:8000/static/plots/results_plot_religion_${survey.id}.png?v=${timestamp}`
+              `https://sortinghat-api.onrender.com/static/plots/results_plot_religion_${survey.id}.png?v=${timestamp}`
             );
           }
         } catch (error) {

@@ -19,6 +19,9 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     # antes estaba asi
@@ -28,3 +31,6 @@ urlpatterns = [
     # path("", include("sorting_hat.urls")),  # Mantén las rutas de la API separadas
     # path("", TemplateView.as_view(template_name="index.html")),  # Sirve la aplicación React para cualquier otra URL
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
