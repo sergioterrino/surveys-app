@@ -150,7 +150,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # añado esto para setear las cors authorizations
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173"
+    "http://localhost:5173",
+    "https://sortinghat-m5tq.onrender.com",
 ] 
 
 # para que se autodoscumente la api
