@@ -5,6 +5,9 @@ from rest_framework.documentation import include_docs_urls
 from sorting_hat.views import SurveyViewSet, QuestionViewSet, AnswerViewSet, RegisterView, LoginView, UserView
 from .views import get_username_by_id, generate_plot
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 # todo este codigo es para hacer la API Rest, es decir,
 # para que se pueda hacer un GET, POST, PUT, DELETE
 
@@ -28,3 +31,7 @@ urlpatterns = [
 
     path('api/docs/', include_docs_urls(title='Sorting Hat API', public=True)),
 ]
+
+if settings.DEBUG:
+    # urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

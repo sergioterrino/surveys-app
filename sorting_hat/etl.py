@@ -11,7 +11,8 @@ from django.conf import settings
 
 def main(survey_id):
 
-    get_answers_url = f'http://127.0.0.1:8000/api/surveys/{survey_id}/results/overall/'
+    # get_answers_url = f'http://127.0.0.1:8000/api/surveys/{survey_id}/results/overall/'
+    get_answers_url = f'https://sortinghat-api.onrender.com/api/surveys/{survey_id}/results/overall/'
     
     # Crear el directorio de gráficos si no existe -- Esto es para el despliegue en Render
     plots_dir = os.path.join(settings.BASE_DIR, 'static', 'plots')
