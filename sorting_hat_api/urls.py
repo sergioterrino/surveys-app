@@ -21,7 +21,10 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    # path("", include("sorting_hat.urls")), # incluye las urls del file urls.py del directorio sorting_hat
-    path("api/", include("sorting_hat.urls")),  # Mantén las rutas de la API separadas
-    path("", TemplateView.as_view(template_name="index.html")),  # Sirve la aplicación React para cualquier otra URL
+    # antes estaba asi
+    path("", include("sorting_hat.urls")), # incluye las urls del file urls.py del directorio sorting_hat
+    
+    # ahora esta asi para supuestamente desplegar el frontend
+    # path("", include("sorting_hat.urls")),  # Mantén las rutas de la API separadas
+    # path("", TemplateView.as_view(template_name="index.html")),  # Sirve la aplicación React para cualquier otra URL
 ]
