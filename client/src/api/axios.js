@@ -1,13 +1,15 @@
 import axios from 'axios'
 
+const apiUrl = process.env.VITE_API_URL;
+
 // const instance = axios.create({
 //   baseURL: 'http://localhost:8000/api'
 // })
 // const instance = axios.create({
-//   baseURL: 'https://stb-sortinghat.onrender.com/api'
+//   baseURL: 'https://sortinghat-api.onrender.com/api'
 // })
 const instance = axios.create({
-  baseURL: 'https://sortinghat-api.onrender.com/api'
+  baseURL: apiUrl
 })
 
 // Esto es para enviar el token en el header de la petición, si existe
