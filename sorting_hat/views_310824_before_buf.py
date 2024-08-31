@@ -14,6 +14,7 @@ from django.http import JsonResponse, HttpResponse
 import io
 
 
+
 # Esta clase sirve para mostrar los datos de la db en la API, la diferencia con
 # los serializers es que aquí se definen las acciones que se pueden hacer con los datos
 
@@ -147,17 +148,25 @@ class AnswerViewSet(viewsets.ModelViewSet):
     serializer_class = AnswerSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-from .etl import generate_plots
 
-def generate_plot(request, survey_id, plot_type):
+def generate_plot(request, survey_id):
     try:
-        plots = generate_plots(survey_id)
+        scriptPath = os.path.join(os.path.dirname(__file__), 'etl.py')
+        pythonPath = os.path.join(os.path.dirname(os.path.dirname(
+            __file__)), 'venv', 'Scripts', 'python.exe')  # Ajusta esta ruta según tu entorno virtual
+        print('scriptPath, survey_id -> ', scriptPath, survey_id)
+        # Ejecutar el script que genera el plot y lo guarda en /static/
+        result = subprocess.run([pythonPath, scriptPath, str(
+            survey_id)], capture_output=True, text=True)
+        print('result.stdout:', result.stdout)
+        print('result.stderr:', result.stderr)
+        if result.returncode != 0:
+            print('Error en result.returncode:', result.stderr)
+            return JsonResponse({'error': result.stderr}, status=500)
 
-        if plots is None or plot_type not in plots:
-            return HttpResponse(status=404)
-
-        plot = plots[plot_type]
-        return HttpResponse(plot.getvalue(), content_type='image/png')
+        return JsonResponse({'message': 'Plot generated successfully'}, status=200)
     except Exception as e:
         print('Exception:', str(e))
         return JsonResponse({'error': str(e)}, status=500)
+
+

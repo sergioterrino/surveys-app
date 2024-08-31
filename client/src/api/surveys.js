@@ -25,4 +25,8 @@ export const getUsernameById = (id) => axios.get(`/get_username/${id}/`)
 
 export const getAnswers = (id) => axios.get(`/surveys/${id}/results/overall/`)
 
-export const generatePlot = (id) => axios.get(`/generate-plot/${id}/`)
+// export const generatePlot = (id) => axios.get(`/generate-plot/${id}/`)
+
+export const generatePlot = (surveyId, plotType) => {
+  return axios.get(`/plots/${surveyId}/${plotType}/`, { responseType: 'blob' });
+};

@@ -28,7 +28,6 @@ urlpatterns = [
     path('api/get_username/<int:user_id>/', get_username_by_id),
     path('api/surveys/<int:pk>/results/overall/', SurveyViewSet.as_view({'get': 'get_answers'})),
     path('api/generate-plot/<int:survey_id>/', generate_plot),
-    path('api/generate-plot/<int:survey_id>/<str:plot_type>/', generate_plot, name='plot-view'),
 
     path('api/docs/', include_docs_urls(title='Sorting Hat API', public=True)),
 ]
