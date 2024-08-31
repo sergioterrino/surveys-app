@@ -37,21 +37,31 @@ function OverallResultsPage() {
       };
       getQ();
 
+      // const fetchPlot = async (plotType) => {
+      //   try {
+      //     const res = await generatePlot(survey.id, plotType);
+      //     const blob = res.data;
+      //     const imageUrl = URL.createObjectURL(blob);
+      //     setPlotUrls(prev => ({ ...prev, [plotType]: imageUrl }));
+      //   } catch (error) {
+      //     console.error(`Error fetching ${plotType} plot:`, error);
+      //   }
+      // };
       const fetchPlot = async (plotType) => {
         try {
-          const res = await generatePlot(survey.id, plotType);
-          const blob = res.data;
-          const imageUrl = URL.createObjectURL(blob);
-          setPlotUrls(prev => ({ ...prev, [plotType]: imageUrl }));
+            const res = await generatePlot(survey.id, plotType);
+            const base64String = res.data; // Suponiendo que el backend devuelve la cadena base64 directamente.
+            const imageUrl = `data:image/png;base64,${base64String}`; // Crear el URL en formato base64
+            setPlotUrls(prev => ({ ...prev, [plotType]: imageUrl }));
         } catch (error) {
-          console.error(`Error fetching ${plotType} plot:`, error);
+            console.error(`Error fetching ${plotType} plot:`, error);
         }
-      };
+    };
 
       fetchPlot('main');
-      // if (survey.sex) fetchPlot('sex');
-      // if (survey.age) fetchPlot('age');
-      // if (survey.religion) fetchPlot('religion');
+      if (survey.sex) fetchPlot('sex');
+      if (survey.age) fetchPlot('age');
+      if (survey.religion) fetchPlot('religion');
     }
   }, [survey]);
 
