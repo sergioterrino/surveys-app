@@ -154,6 +154,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "https://stb-sortinghat.onrender.com",
 ] 
+CORS_ALLOW_ALL_ORIGINS = True
 
 # para que se autodoscumente la api
 REST_FRAMEWORK = {

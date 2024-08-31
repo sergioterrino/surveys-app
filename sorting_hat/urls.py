@@ -28,11 +28,7 @@ urlpatterns = [
     path('api/get_username/<int:user_id>/', get_username_by_id),
     path('api/surveys/<int:pk>/results/overall/', SurveyViewSet.as_view({'get': 'get_answers'})),
     path('api/generate-plot/<int:survey_id>/', generate_plot),
-    path('api/generate-plot/<int:survey_id>/<str:plot_type>/', generate_plot, name='plot-view'),
+    path('api/generate-plot/<int:survey_id>/<str:plot_type>/', generate_plot),
 
     path('api/docs/', include_docs_urls(title='Sorting Hat API', public=True)),
 ]
-
-if settings.DEBUG:
-    # urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
