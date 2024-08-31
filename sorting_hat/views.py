@@ -175,7 +175,7 @@ import logging
 logger = logging.getLogger(__name__)
 def generate_plot(request, survey_id, plot_type):
     try:
-        plots = generate_plots(survey_id)
+        plots = generate_plots(request, survey_id)
         if plots is None:
             logger.error(f"No se encontraron gráficos para el survey_id dado: {survey_id}")
             return JsonResponse({'error': 'No se encontraron gráficos para el survey_id dado.'}, status=404)

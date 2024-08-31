@@ -152,7 +152,7 @@ from django.http import JsonResponse
 #     return {'main': img_main}
 
 
-def generate_plots(survey_id):
+def generate_plots(request, survey_id):
     # Obtener los datos de la API
     get_answers_url = f'https://sortinghat-api.onrender.com/api/surveys/{survey_id}/results/overall/'
 
