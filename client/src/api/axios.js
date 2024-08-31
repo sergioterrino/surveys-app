@@ -9,7 +9,8 @@ const apiUrl = import.meta.env.VITE_API_URL;
 //   baseURL: 'https://sortinghat-api.onrender.com/api'
 // })
 const instance = axios.create({
-  baseURL: apiUrl
+  baseURL: apiUrl,
+  withCredentials: True
 })
 
 // Esto es para enviar el token en el header de la petición, si existe

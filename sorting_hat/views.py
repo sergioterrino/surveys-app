@@ -148,16 +148,24 @@ class AnswerViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
 from .etl import generate_plots
+from django.core.exceptions import SuspiciousOperation
 
 def generate_plot(request, survey_id, plot_type):
     try:
         plots = generate_plots(survey_id)
 
-        if plots is None or plot_type not in plots:
+        if plots is None:
+            raise ValueError("No se encontraron gráficos para el survey_id dado.")
+
+        if plot_type not in plots:
             return HttpResponse(status=404)
 
         plot = plots[plot_type]
         return HttpResponse(plot.getvalue(), content_type='image/png')
+    except ValueError as ve:
+        return JsonResponse({'error': str(ve)}, status=400)
+    except SuspiciousOperation as se:
+        return JsonResponse({'error': 'Solicitud sospechosa: {}'.format(se)}, status=400)
     except Exception as e:
-        print('Exception:', str(e))
-        return JsonResponse({'error': str(e)}, status=500)
+        # Agrega más información sobre el error aquí
+        return JsonResponse({'error': 'Error interno del servidor: {}'.format(str(e))}, status=500)
