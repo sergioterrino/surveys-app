@@ -150,22 +150,51 @@ class AnswerViewSet(viewsets.ModelViewSet):
 from .etl import generate_plots
 from django.core.exceptions import SuspiciousOperation
 
+# def generate_plot(request, survey_id, plot_type):
+#     try:
+#         plots = generate_plots(survey_id)
+
+#         if plots is None:
+#             raise ValueError("No se encontraron gráficos para el survey_id dado.")
+
+#         if plot_type not in plots:
+#             return HttpResponse(status=404)
+
+#         plot = plots[plot_type]
+#         return HttpResponse(plot.getvalue(), content_type='image/png')
+#     except ValueError as ve:
+#         return JsonResponse({'error': str(ve)}, status=400)
+#     except SuspiciousOperation as se:
+#         return JsonResponse({'error': 'Solicitud sospechosa: {}'.format(se)}, status=400)
+#     except Exception as e:
+#         # Agrega más información sobre el error aquí
+#         return JsonResponse({'error': 'Error interno del servidor: {}'.format(str(e))}, status=500)
+
+import logging
+
+logger = logging.getLogger(__name__)
 def generate_plot(request, survey_id, plot_type):
     try:
         plots = generate_plots(survey_id)
-
         if plots is None:
-            raise ValueError("No se encontraron gráficos para el survey_id dado.")
+            logger.error(f"No se encontraron gráficos para el survey_id dado: {survey_id}")
+            return JsonResponse({'error': 'No se encontraron gráficos para el survey_id dado.'}, status=404)
 
         if plot_type not in plots:
+            logger.error(f"Tipo de gráfico no encontrado: {plot_type}")
             return HttpResponse(status=404)
 
         plot = plots[plot_type]
-        return HttpResponse(plot.getvalue(), content_type='image/png')
-    except ValueError as ve:
-        return JsonResponse({'error': str(ve)}, status=400)
-    except SuspiciousOperation as se:
-        return JsonResponse({'error': 'Solicitud sospechosa: {}'.format(se)}, status=400)
+        img_data = plot.getvalue()
+
+        if img_data.startswith(b'\x89PNG\r\n\x1a\n'):
+            response = HttpResponse(img_data, content_type='image/png')
+            response["Access-Control-Allow-Origin"] = "*"
+            return response
+        else:
+            logger.error('El archivo generado no es una imagen PNG válida.')
+            return JsonResponse({'error': 'El archivo generado no es una imagen PNG válida.'}, status=500)
+
     except Exception as e:
-        # Agrega más información sobre el error aquí
-        return JsonResponse({'error': 'Error interno del servidor: {}'.format(str(e))}, status=500)
+        logger.error(f"Error interno del servidor: {str(e)}")
+        return JsonResponse({'error': str(e)}, status=500)
