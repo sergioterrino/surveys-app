@@ -49,9 +49,9 @@ function OverallResultsPage() {
       };
 
       fetchPlot('main');
-      if (survey.sex) fetchPlot('sex');
-      if (survey.age) fetchPlot('age');
-      if (survey.religion) fetchPlot('religion');
+      // if (survey.sex) fetchPlot('sex');
+      // if (survey.age) fetchPlot('age');
+      // if (survey.religion) fetchPlot('religion');
     }
   }, [survey]);
 

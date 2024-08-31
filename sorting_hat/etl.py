@@ -10,6 +10,12 @@ def generate_plots(survey_id):
 
     try:
         response = requests.get(get_answers_url)
+        
+        # Verifica si hay algún problema en esta llamada
+        if response.status_code != 200:
+            # Maneja errores de la solicitud
+            raise Exception(f"EEEEEEEError al obtener respuestas: {response.status_code}")
+        
         response.raise_for_status()
         data = response.json()
     except requests.exceptions.RequestException as e:
