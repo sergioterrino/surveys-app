@@ -29,7 +29,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='yoursecretkey')
 # DEBUG = True
 DEBUG = 'RENDER' not in os.environ # en desarrollo se pone en True, en producción en False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["stb-sortinghat.onrender.com",]
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
@@ -130,17 +130,17 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
 # añadido para que se pueda acceder a los archivos estáticos /static/
 # STATICFILES_DIRS = [BASE_DIR / "static"]
 # STATIC_ROOT = BASE_DIR / "staticfiles"
 
-if not DEBUG:
-    # Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# if not DEBUG:
+#     # Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)
+#     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+#     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # MEDIA_URL = '/media/'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
