@@ -294,6 +294,8 @@ from django.http import JsonResponse
 #     img_main.seek(0)
 #     return {'main': img_main}
 
+import logging
+logger = logging.getLogger('myapp')
 
 def get_data(survey_id):
     # Obtener los datos de la API
@@ -306,12 +308,13 @@ def get_data(survey_id):
             raise Exception(f"Error al obtener respuestas: {response.status_code}")
         response.raise_for_status()
         data = response.json()
+        logger.debug('EEEEEETTTTTTLLLLL data->>>> %s', data)
     except requests.exceptions.RequestException as e:
-        print(f'Error al obtener los datos: {e}')
+        logger.error('Error al obtener los datos: %s', e)
         return JsonResponse({'error': str(e)}, status=500)
 
     if not data:
-        print('No se pudieron obtener los datos.')
+        logger.error('No se pudieron obtener los datos.')
         return JsonResponse({'error': 'No se pudieron obtener los datos.'}, status=500)
     
     return data
