@@ -320,17 +320,17 @@ def get_data(survey_id):
     return data
 
 
-def generate_plots(request, survey_id, plot_type):
+def generate_plots(survey_id, plot_type):
     data = get_data(survey_id)
 
     if plot_type == 'main':
-        return {"main": generate_main_plot(request, data)}
+        return {"main": generate_main_plot( data)}
     elif plot_type == 'age':
-        return {"age": generate_age_plot(request, data)}
+        return {"age": generate_age_plot( data)}
     elif plot_type == 'sex':
-        return {"sex": generate_sex_plot(request, data)}
+        return {"sex": generate_sex_plot( data)}
     elif plot_type == 'religion':
-        return {"religion": generate_religion_plot(request, data)}
+        return {"religion": generate_religion_plot( data)}
     else:
         raise ValueError("Invalid plot type")
 
@@ -371,7 +371,7 @@ def generate_plots(request, survey_id, plot_type):
 #     pio.write_image(fig, img_main, format='png')
 #     img_main.seek(0)
 #     return img_main
-def generate_main_plot(request):
+def generate_main_plot():
     try:
         # Ejemplo simple de creación de un gráfico
         fig = go.Figure(data=[go.Bar(y=[1, 3, 2])])
@@ -379,7 +379,7 @@ def generate_main_plot(request):
         pio.write_image(fig, img_main, format='png')
         img_main.seek(0)
         logger.debug('Gráfico generado correctamente.')
-        return {'main': img_main}
+        return img_main
     except Exception as e:
         logger.error('Error al generar el gráfico: %s', e)
         return None
