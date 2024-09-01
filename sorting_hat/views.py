@@ -175,7 +175,7 @@ import logging
 logger = logging.getLogger(__name__)
 def generate_plot(request, survey_id, plot_type):
     try:
-        plots = generate_plots( survey_id, plot_type)
+        plots = generate_plots(request, survey_id, plot_type)
         if plots is None:
             logger.error(f"No se encontraron gráficos para el survey_id dado: {survey_id}")
             return JsonResponse({'error': 'No se encontraron gráficos para el survey_id dado.'}, status=404)
@@ -187,13 +187,13 @@ def generate_plot(request, survey_id, plot_type):
         plot = plots[plot_type]
         img_data = plot.getvalue()
 
-        if img_data.startswith(b'\x89PNG\r\n\x1a\n'):
-            response = HttpResponse(img_data, content_type='image/png')
-            response["Access-Control-Allow-Origin"] = "*"
-            return response
-        else:
-            logger.error('El archivo generado no es una imagen PNG válida.')
-            return JsonResponse({'error': 'El archivo generado no es una imagen PNG válida.'}, status=500)
+        # if img_data.startswith(b'\x89PNG\r\n\x1a\n'):
+        response = HttpResponse(img_data, content_type='image/png')
+        response["Access-Control-Allow-Origin"] = "*"
+        return response
+        # else:
+        #     logger.error('El archivo generado no es una imagen PNG válida.')
+        #     return JsonResponse({'error': 'El archivo generado no es una imagen PNG válida.'}, status=500)
 
     except Exception as e:
         logger.error(f"Error interno del servidor: {str(e)}")
