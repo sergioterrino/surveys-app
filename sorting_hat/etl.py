@@ -379,7 +379,7 @@ def generate_main_plot(request):
         pio.write_image(fig, img_main, format='png')
         img_main.seek(0)
         logger.debug('Gráfico generado correctamente.')
-        return img_main
+        return {'main': img_main}
     except Exception as e:
         logger.error('Error al generar el gráfico: %s', e)
         return None
