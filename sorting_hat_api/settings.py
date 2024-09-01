@@ -25,9 +25,11 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='yoursecretkey')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
-DEBUG = 'RENDER' not in os.environ # en desarrollo se pone en True, en producción en False
+# en desarrollo se pone en True, en producción en False
+DEBUG = 'RENDER' not in os.environ
 
-ALLOWED_HOSTS = ["stb-sortinghat.onrender.com", 'localhost', '127.0.0.1',]
+ALLOWED_HOSTS = ["sortinghat-api.onrender.com",
+                 "stb-sortinghat.onrender.com", 'localhost', '127.0.0.1',]
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
@@ -42,23 +44,26 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "corsheaders", # añado esto para que backend y frontend se conecten sin problema (pip i django-cors-headers)
-    "rest_framework", # pip i djangorestframework me permitirá crear el api
+    # añado esto para que backend y frontend se conecten sin problema (pip i django-cors-headers)
+    "corsheaders",
+    "rest_framework",  # pip i djangorestframework me permitirá crear el api
     "rest_framework.authtoken",
-    "coreapi", # pip i coreapi me permitirá crear la documentación de la api
-    "sorting_hat" # esta es mi app
+    "coreapi",  # pip i coreapi me permitirá crear la documentación de la api
+    "sorting_hat"  # esta es mi app
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "corsheaders.middleware.CorsMiddleware", # añadido para comunicarme con otro server
+    # añadido para comunicarme con otro server
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'whitenoise.middleware.WhiteNoiseMiddleware', # añadido para que se sirvan los archivos estáticos
+    # añadido para que se sirvan los archivos estáticos
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = "sorting_hat_api.urls"
@@ -151,7 +156,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "https://stb-sortinghat.onrender.com",
-] 
+]
 
 
 # para que se autodoscumente la api
