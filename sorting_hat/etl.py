@@ -308,7 +308,8 @@ def get_data(survey_id):
             raise Exception(f"Error al obtener respuestas: {response.status_code}")
         response.raise_for_status()
         data = response.json()
-        logger.debug('EEEEEETTTTTTLLLLL data->>>> %s', data)
+        # print('QUe pasaaaa', data)
+        # logger.debug('EEEEEETTTTTTLLLLL data->>>> %s', data)
     except requests.exceptions.RequestException as e:
         logger.error('Error al obtener los datos: %s', e)
         return JsonResponse({'error': str(e)}, status=500)

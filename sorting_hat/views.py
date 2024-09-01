@@ -187,13 +187,13 @@ def generate_plot(request, survey_id, plot_type):
         plot = plots[plot_type]
         img_data = plot.getvalue()
 
-        # if img_data.startswith(b'\x89PNG\r\n\x1a\n'):
-        response = HttpResponse(img_data, content_type='image/png')
-        response["Access-Control-Allow-Origin"] = "*"
-        return response
-        # else:
-        #     logger.error('El archivo generado no es una imagen PNG válida.')
-        #     return JsonResponse({'error': 'El archivo generado no es una imagen PNG válida.'}, status=500)
+        if img_data.startswith(b'\x89PNG\r\n\x1a\n'):
+            response = HttpResponse(img_data, content_type='image/png')
+            response["Access-Control-Allow-Origin"] = "*"
+            return response
+        else:
+            logger.error('El archivo generado no es una imagen PNG válida.')
+            return JsonResponse({'error': 'El archivo generado no es una imagen PNG válida.'}, status=500)
 
     except Exception as e:
         logger.error(f"Error interno del servidor: {str(e)}")
