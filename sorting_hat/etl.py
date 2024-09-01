@@ -371,7 +371,7 @@ def generate_plots(request, survey_id, plot_type):
 #     pio.write_image(fig, img_main, format='png')
 #     img_main.seek(0)
 #     return img_main
-def generate_main_plot(request, data):
+def generate_main_plot(request):
     try:
         # Ejemplo simple de creación de un gráfico
         fig = go.Figure(data=[go.Bar(y=[1, 3, 2])])
@@ -383,6 +383,13 @@ def generate_main_plot(request, data):
     except Exception as e:
         logger.error('Error al generar el gráfico: %s', e)
         return None
+# def generate_plots(id_survey):
+#     # Ejemplo simple de creación de un gráfico
+#     fig = go.Figure(data=[go.Bar(y=[1, 3, 2])])
+#     img_main = io.BytesIO()
+#     pio.write_image(fig, img_main, format='png')
+#     img_main.seek(0)
+#     return {'main': img_main}
 
 def generate_sex_plot(request, data):
     df = pd.DataFrame(data)
