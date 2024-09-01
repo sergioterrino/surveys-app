@@ -335,43 +335,54 @@ def generate_plots(request, survey_id, plot_type):
         raise ValueError("Invalid plot type")
 
 
+# def generate_main_plot(request, data):
+#     df = pd.DataFrame(data)
+#     df_main = df.drop(columns=['id', 'user', 'survey', 'question11', 'question12', 'question13'])
+
+#     result_columns = [f'question{i}' for i in range(1, 11)]
+#     df_main[result_columns] = df_main[result_columns].apply(pd.to_numeric, errors='coerce')
+#     df_mean = df_main[result_columns].mean()
+
+#     df_mean_plot = pd.DataFrame({'question': df_mean.index, 'mean_score': df_mean.values})
+#     df_mean_plot['question'] = df_mean_plot['question'].apply(lambda x: x.replace('question', 'Q'))
+
+#     fig = px.bar(
+#         df_mean_plot,
+#         x='question',
+#         y='mean_score',
+#         title='Mean Score by Question',
+#         labels={'question': 'Question', 'mean_score': 'Mean Score'},
+#         color='question',
+#         color_discrete_sequence=px.colors.qualitative.Bold,
+#     )
+#     fig.update_traces(texttemplate='%{y:.1f}', textposition='outside')
+#     fig.update_layout(
+#         template='plotly_dark',
+#         xaxis_title='Question',
+#         yaxis_title='Mean Score',
+#         showlegend=False,
+#         plot_bgcolor='rgba(0,0,0,0)',
+#         paper_bgcolor='rgba(0,0,0,0)',
+#         margin=dict(l=0, r=0, t=70, b=0),
+#         title={'x': 0.5, 'y': 0.95}
+#     )
+#     # Convertir a imagen en memoria
+#     img_main = io.BytesIO()
+#     pio.write_image(fig, img_main, format='png')
+#     img_main.seek(0)
+#     return img_main
 def generate_main_plot(request, data):
-    df = pd.DataFrame(data)
-    df_main = df.drop(columns=['id', 'user', 'survey', 'question11', 'question12', 'question13'])
-
-    result_columns = [f'question{i}' for i in range(1, 11)]
-    df_main[result_columns] = df_main[result_columns].apply(pd.to_numeric, errors='coerce')
-    df_mean = df_main[result_columns].mean()
-
-    df_mean_plot = pd.DataFrame({'question': df_mean.index, 'mean_score': df_mean.values})
-    df_mean_plot['question'] = df_mean_plot['question'].apply(lambda x: x.replace('question', 'Q'))
-
-    fig = px.bar(
-        df_mean_plot,
-        x='question',
-        y='mean_score',
-        title='Mean Score by Question',
-        labels={'question': 'Question', 'mean_score': 'Mean Score'},
-        color='question',
-        color_discrete_sequence=px.colors.qualitative.Bold,
-    )
-    fig.update_traces(texttemplate='%{y:.1f}', textposition='outside')
-    fig.update_layout(
-        template='plotly_dark',
-        xaxis_title='Question',
-        yaxis_title='Mean Score',
-        showlegend=False,
-        plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)',
-        margin=dict(l=0, r=0, t=70, b=0),
-        title={'x': 0.5, 'y': 0.95}
-    )
-    # Convertir a imagen en memoria
-    img_main = io.BytesIO()
-    pio.write_image(fig, img_main, format='png')
-    img_main.seek(0)
-    return img_main
-
+    try:
+        # Ejemplo simple de creación de un gráfico
+        fig = go.Figure(data=[go.Bar(y=[1, 3, 2])])
+        img_main = io.BytesIO()
+        pio.write_image(fig, img_main, format='png')
+        img_main.seek(0)
+        logger.debug('Gráfico generado correctamente.')
+        return img_main
+    except Exception as e:
+        logger.error('Error al generar el gráfico: %s', e)
+        return None
 
 def generate_sex_plot(request, data):
     df = pd.DataFrame(data)
