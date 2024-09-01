@@ -27,9 +27,9 @@ export const getAnswers = (id) => axios.get(`/surveys/${id}/results/overall/`)
 
 // export const generatePlot = (id) => axios.get(`/generate-plot/${id}/`)
 
-// export const generatePlot = (surveyId, plotType) => 
-//    axios.get(`/generate-plot/${surveyId}/${plotType}/`, { responseType: 'blob' });
-
 export const generatePlot = (surveyId, plotType) => 
-   axios.get(`/generate-plot/${surveyId}/${plotType}/`)
-        .then(res => res.data);  // Devolvemos directamente la cadena base64 recibida desde el backend
+   axios.get(`/generate-plot/${surveyId}/${plotType}/`, { responseType: 'blob' });
+
+// export const generatePlot = (surveyId, plotType) => 
+//    axios.get(`/generate-plot/${surveyId}/${plotType}/`)
+//         .then(res => res.data);  // Devolvemos directamente la cadena base64 recibida desde el backend
